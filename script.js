@@ -1,7 +1,7 @@
 // Declare global variables
-const updateDate = "February 10, 2025";
-const activityLevel = 1; // 1=Low; 2=Moderate; 3=High
-const activityTrend = 1; // 1=Decrease; 2=Same; 3=Increase
+const updateDate = "February 13, 2025";
+const activityLevel = 2; // 1=Low; 2=Moderate; 3=High
+const activityTrend = 2; // 1=Decrease; 2=Same; 3=Increase
 
 // On page load, update dynamic content
 document.addEventListener("DOMContentLoaded", function () {
