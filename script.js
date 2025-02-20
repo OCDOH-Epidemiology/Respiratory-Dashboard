@@ -1,5 +1,5 @@
 // Declare global variables
-const updateDate = "February 13, 2025";
+const updateDate = "February 20, 2025";
 const activityLevel = 2; // 1=Low; 2=Moderate; 3=High
 const activityTrend = 2; // 1=Decrease; 2=Same; 3=Increase
 
