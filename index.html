@@ -17,21 +17,13 @@
 
 <body>
     <div class="container my-4">
-        <h1 class="text-center">
-            Orange County Department of Health Respiratory Illness Dashboard
-        </h1>
+        <h1 class="text-center">Orange County Department of Health Respiratory Illness Dashboard</h1>
         <p class="text-center">
-            Stay informed with real-time data on respiratory illnesses affecting Orange County.
-            Our interactive dashboard provides up-to-date insights on
-            <a href="https://www.orangecountygov.com/2345/Influenza-Flu" target="_blank"
-                rel="noopener noreferrer">Influenza (Flu)</a>,
-            <a href="https://www.orangecountygov.com/2341/COVID-19" target="_blank"
-                rel="noopener noreferrer">COVID-19</a>, and
-            <a href="https://www.orangecountygov.com/2580/RSV-Respiratory-Syncytial-Virus" target="_blank"
-                rel="noopener noreferrer">RSV</a>.
-            Explore trends, track key health metrics, and access essential resources to help protect yourself and your
-            community.<br><br>Click below to learn more about each illness, including symptoms, prevention strategies,
-            and local health services.
+            Stay informed with real-time data on respiratory illnesses affecting Orange County. Our dashboard provides up-to-date insights on
+            <a href="https://www.orangecountygov.com/2345/Influenza-Flu" target="_blank" rel="noopener noreferrer">Influenza (Flu)</a>,
+            <a href="https://www.orangecountygov.com/2341/COVID-19" target="_blank" rel="noopener noreferrer">COVID-19</a>, and
+            <a href="https://www.orangecountygov.com/2580/RSV-Respiratory-Syncytial-Virus" target="_blank" rel="noopener noreferrer">RSV</a>.
+            Explore trends and access essential resources to help protect yourself and your community.<br><br>Click below to learn more about each illness, including symptoms, prevention strategies, and local health services.
         </p>
     </div>
 
@@ -40,29 +32,20 @@
         <div class="container my-4">
             <div class="row justify-content-center">
                 <div class="col-12 col-sm-6 col-md-4 mb-2">
-                    <a href="https://www.orangecountygov.com/2341/COVID-19"
-                        class="btn btn-lg rounded-pill w-100 d-flex align-items-center justify-content-center"
-                        style="background-color: #D0FBE0; color: black; font-size: 1.5rem;">
-                        <lord-icon src="https://cdn.lordicon.com/vzomtgvp.json" trigger="hover"
-                            style="width: 40px; height: 40px; margin-right: 12px;"></lord-icon>
+                    <a href="https://www.orangecountygov.com/2341/COVID-19" class="btn btn-lg rounded-pill w-100 d-flex align-items-center justify-content-center" style="background-color: #D0FBE0; color: black; font-size: 1.5rem;" target="_blank">
+                        <lord-icon src="https://cdn.lordicon.com/vzomtgvp.json" trigger="hover" style="width: 40px; height: 40px; margin-right: 12px;"></lord-icon>
                         <span>COVID-19</span>
                     </a>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4 mb-2">
-                    <a href="https://www.orangecountygov.com/2345/Influenza-Flu"
-                        class="btn btn-lg rounded-pill w-100 d-flex align-items-center justify-content-center"
-                        style="background-color: #CBB1D4; color: white; font-size: 1.5rem;">
-                        <lord-icon src="https://cdn.lordicon.com/arwxzizt.json" trigger="hover"
-                            style="width: 40px; height: 40px; margin-right: 12px;"></lord-icon>
+                    <a href="https://www.orangecountygov.com/2345/Influenza-Flu" class="btn btn-lg rounded-pill w-100 d-flex align-items-center justify-content-center" style="background-color: #CBB1D4; color: white; font-size: 1.5rem;" target="_blank">
+                        <lord-icon src="https://cdn.lordicon.com/arwxzizt.json" trigger="hover" style="width: 40px; height: 40px; margin-right: 12px;"></lord-icon>
                         <span>Flu</span>
                     </a>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4 mb-2">
-                    <a href="https://www.orangecountygov.com/2580/RSV-Respiratory-Syncytial-Virus"
-                        class="btn btn-lg rounded-pill w-100 d-flex align-items-center justify-content-center"
-                        style="background-color: #84C2D6; color: white; font-size: 1.5rem;">
-                        <lord-icon src="https://cdn.lordicon.com/lhrqmkda.json" trigger="hover"
-                            style="width: 40px; height: 40px; margin-right: 12px;"></lord-icon>
+                    <a href="https://www.orangecountygov.com/2580/RSV-Respiratory-Syncytial-Virus" class="btn btn-lg rounded-pill w-100 d-flex align-items-center justify-content-center" style="background-color: #84C2D6; color: white; font-size: 1.5rem;" target="_blank">
+                        <lord-icon src="https://cdn.lordicon.com/lhrqmkda.json" trigger="hover" style="width: 40px; height: 40px; margin-right: 12px;"></lord-icon>
                         <span>RSV</span>
                     </a>
                 </div>
@@ -81,15 +64,15 @@
             <div class="legend-container">
                 <div class="legend-item">
                     <span class="legend-color" style="background-color: #00D26A;"></span>
-                    <span>Low Activity</span>
+                    <span>Low</span>
                 </div>
                 <div class="legend-item">
                     <span class="legend-color" style="background-color: #FCD53F;"></span>
-                    <span>Moderate Activity</span>
+                    <span>Moderate</span>
                 </div>
                 <div class="legend-item">
                     <span class="legend-color" style="background-color: #F8312F;"></span>
-                    <span>High Activity</span>
+                    <span>High</span>
                 </div>
             </div>
             <div class="my-4 d-flex justify-content-center half-doughnut">
@@ -98,65 +81,43 @@
             <!-- Activity text below gauge -->
             <div class="text-center" style="font-size: 2rem; margin-top: 20px; font-weight: bold;">
                 <span id="activityText"></span>
-                <span style="color: black;"> Activity</span>
+                <span style="color: black;"> Level</span>
             </div>
         </div>
 
-        <p class="text-center">The graph above displays the latest respiratory illness activity levels in Orange County,
-            tracking emergency department visits for Influenza (Flu), COVID-19, and RSV.<br>Activity levels indicate the
-            intensity of respiratory illnesses circulating in the community.</p>
+        <p class="text-center">The graph above displays the latest respiratory illness activity levels in Orange County, tracking <strong>Laboratory Reports, Hospital Visits, School and Facility Reports, and Wastewater Surveillance</strong> visits for Influenza (Flu), COVID-19, and RSV.<br>Activity levels indicate the intensity of respiratory illnesses circulating in the community.</p>
         <div class="container my-3">
             <div class="row text-center">
                 <div class="col-md-4 p-3 border rounded" style="background-color: #D0FBE0;">
-                    <h4 class="text-dark">🟢 Low Activity</h4>
-                    <p class="text-dark">Fewer emergency department visits suggest a decline in respiratory illnesses.
-                        However, residents should remain cautious, especially during peak flu seasons.</p>
+                    <h4 class="text-dark">🟢 Low</h4>
+                    <p class="text-dark">Fewer people are seeking medical care for respiratory symptoms. However, residents should remain cautious, especially during the peak of the flu season.</p>
                 </div>
                 <div class="col-md-4 p-3 border rounded" style="background-color: #FFE599;">
-                    <h4 class="text-dark">🟡 Moderate Activity</h4>
-                    <p class="text-dark">No significant changes in illness levels. While the situation remains steady,
-                        staying up to date with vaccinations and practicing good hygiene is encouraged.</p>
+                    <h4 class="text-dark">🟡 Moderate</h4>
+                    <p class="text-dark">No significant changes in illness levels. While the situation remains steady, staying up to date with vaccinations and practicing good hygiene is encouraged.</p>
                 </div>
-
                 <div class="col-md-4 p-3 border rounded" style="background-color: #FF9999;">
-                    <h4 class="text-dark">🔴 High Activity</h4>
-                    <p class="text-dark">More people are seeking medical care for respiratory symptoms. Extra
-                        precautions, such as mask-wearing and staying home when sick, are recommended.</p>
+                    <h4 class="text-dark">🔴 High</h4>
+                    <p class="text-dark">More people are seeking medical care for respiratory symptoms. Extra precautions, such as mask-wearing and staying home when sick, are recommended.</p>
                 </div>
             </div>
         </div>
 
-        <p class="text-center">Monitoring these levels helps residents stay informed and take the necessary steps to
-            protect themselves and their families. Check back for weekly updates on trends and changes in respiratory
-            illness activity.</p>
-
-        <!-- Trend Analysis Title Section -->
-        <h2 class="text-center">Orange County Respiratory Trend Analysis</h2>
-
         <!-- Trend Analysis Section -->
+        <h2 class="text-center">Orange County Respiratory Trend Analysis</h2>
         <div class="container my-3 border p-3" style="border: 2px solid black; border-radius: 10px;">
-            <button id="trendButton" type="button" class="btn btn-lg rounded-pill d-block w-100"
-                style="border: 2px solid black; font-size: 3rem; padding: 1rem;"></button>
+            <button id="trendButton" type="button" class="btn btn-lg rounded-pill d-block w-100" style="border: 2px solid black; font-size: 3rem; padding: 1rem;"></button>
         </div>
     </div>
 
-    <p class="text-center">The chart above tracks <strong>Respiratory Illness Trends</strong> in Orange County, showing
-        how Influenza(flu), COVID-19, and RSV are changing over time.<br>By analyzing patterns in <strong>Emergency
-            Department Visits</strong>, we can determine whether respiratory illnesses are <strong>increasing,
-            decreasing, or remaining stable</strong> in the community.</p>
-
-    <p class="text-center">Staying informed about these trends can help you make the best decisions to protect yourself,
-        your family, and the community.<br>Check back for <strong>weekly updates</strong> to stay ahead of changing
-        respiratory illness patterns.</p>
-
+    <p class="text-center">The chart above tracks <strong>Respiratory Illness Trends</strong> in Orange County, showing how Influenza(flu), COVID-19, and RSV are changing over time.<br>By analyzing patterns in <strong>Laboratory Reports, Hospital Visits, School and Facility Reports, and Wastewater Surveillance</strong>, we can determine whether respiratory illnesses are <strong>increasing, decreasing, or remaining stable</strong> in the community.</p>
+    <p class="text-center">Staying informed about these trends can help you make the best decisions to protect yourself, your family, and the community.<br>Check back for <strong>weekly updates</strong> to stay ahead of changing respiratory illness patterns.</p>
     <div class="px-3 mb-2">
         <h2>Actions You Can Take Based on Current Activity Level</h2>
         <div class="accordion" id="accordionExample">
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingOne">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        Healthy Actions to Take at Any Disease Level
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Healthy Actions to Take at Any Disease Level
                     </button>
                 </h2>
                 <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
@@ -165,7 +126,7 @@
                         <ul>
                             <li>Get vaccinated against respiratory illnesses. COVID-19 and flu vaccines are recommended
                                 for people 6 months and older. RSV vaccine is recommended for people at high risk—talk
-                                with your health care provider for details. Go to vaccines.gov for a location near you.
+                                with your health care provider for details. Go to <a href="https://www.vaccines.gov/en/" target="_blank">vaccines.gov</a> for a location near you.
                             </li>
                             <li>Wash hands often with soap and water for 20 seconds, especially after coughing or
                                 sneezing.</li>
@@ -189,7 +150,7 @@
                     <div class="accordion-body">
                         <ul>
                             <li>Consider wearing a well-fitted mask when around others indoors.</li>
-                            <li>Keep a distance from others when possible.</li>
+                            <li>Avoid crowded areas when possible.</li>
                             <li>Improve air quality by bringing in fresh air from outside (opening doors or windows or
                                 using exhaust fans), purifying air indoors, or gathering outdoors.</li>
                         </ul>
@@ -199,43 +160,6 @@
         </div>
     </div>
 
-    <br>
-    <div class="px-3 mb-2">
-        <h2>Definitions</h2>
-        <div class="accordion" id="accordionExample">
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingOne">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        Important Terms
-                    </button>
-                </h2>
-                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
-                    data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                        <ul>
-                            <li>Dashboard – A screen that shows important information in a clear and organized way, like
-                                the dashboard in a car.</li>
-                            <li>Emergency Department – The part of a hospital where people go if they are very sick or
-                                hurt; it is also called the ER.
-                            <li> Insights – Smart ideas or understandings you get when you look at information
-                                carefully.</li>
-                            <li>Interactive – Parts of a website that you can click on or use to change what you see.
-                            </li>
-                            <li>Metrics – Numbers that tell us how well something is working or how much of something
-                                there is.</li>
-                            <li> Real-time – Information that is shown right away as it happens, without any delay.</li>
-                            <li> RSV – A virus that can make people sick in their lungs; it stands for Respiratory
-                                Syncytial Virus.</li>
-                            <li> Trend Analysis – Looking at information over time to see if it is going up, down, or
-                                staying the same.</li>
-
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <script src="./script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
