@@ -1,5 +1,5 @@
 // Declare global variables
-const updateDate = "March 10, 2025";
+const updateDate = "February 10, 2025";
 const activityLevel = 2; // 1=Low; 2=Moderate; 3=High
 const activityTrend = 1; // 1=Decrease; 2=Same; 3=Increase
 
@@ -8,20 +8,31 @@ document.addEventListener("DOMContentLoaded", function () {
   // Update the text containing the date
   document.getElementById("update-date").textContent = updateDate;
 
-  // Update the activity trend information
+  // Update the trend analysis button:
+  // Set its text based on the activityTrend value...
   const trendButton = document.getElementById("trendButton");
   switch (activityTrend) {
     case 1:
       trendButton.textContent = "📉 Decreasing";
-      trendButton.style.backgroundColor = "#D0FBE0";
       break;
     case 2:
       trendButton.textContent = "➖ Staying the Same";
-      trendButton.style.backgroundColor = "#FFE599";
       break;
     case 3:
       trendButton.textContent = "📈 Increasing";
-      trendButton.style.backgroundColor = "#FF9999";
+      break;
+  }
+
+  // ...and set its background color based on the gauge's activity level colors.
+  switch (activityLevel) {
+    case 1:
+      trendButton.style.backgroundColor = "#00D26A"; // Green for Low
+      break;
+    case 2:
+      trendButton.style.backgroundColor = "#FCD53F"; // Yellow for Moderate
+      break;
+    case 3:
+      trendButton.style.backgroundColor = "#F8312F"; // Red for High
       break;
   }
 
@@ -71,8 +82,8 @@ const gaugeNeedle = {
   id: "gaugeNeedle",
   afterDatasetsDraw(chart, args, options) {
     const { ctx } = chart;
-
-    // Use a switch to set the needle angle
+    let angleInDegrees = 0;
+    // Set the needle angle based on activity level
     switch (activityLevel) {
       case 1:
         angleInDegrees = -60;

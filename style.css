@@ -20,16 +20,3 @@
     align-items: center;
     margin-bottom: 15px;
 }
-
-/* This class adds a border, a background fill with adjustable opacity, and some padding */
-.border-box1 {
-    border: 1px solid #333; /* Matching line weight and color */
-    background-color: #cfe2ff75;
-    padding: 1px; /* Matching padding */
-    border-radius: 4px; /* Rounded corners */
-  }
-  
-  .btn-border {
-    border: 1px solid #333;
-  }
-  
