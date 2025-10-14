@@ -1,12 +1,16 @@
 // Declare global variables
-const updateDate = "October 10, 2025";
+// If you want to override the dynamic date, set updateDateOverride to a string date.
+const updateDateOverride = null; // e.g., "October 10, 2025"
 const activityLevel = 1; // 1=Low; 2=Moderate; 3=High
 const activityTrend = 2; // 1=Decrease; 2=Same; 3=Increase
 
 // On page load, update dynamic content
 document.addEventListener("DOMContentLoaded", function () {
   // Update the text containing the date
-  document.getElementById("update-date").textContent = updateDate;
+  const dateTarget = document.getElementById("update-date");
+  const today = new Date();
+  const dynamicDate = today.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+  dateTarget.textContent = updateDateOverride || dynamicDate;
 
   // Update the trend analysis button:
   // Set its text based on the activityTrend value...
@@ -52,6 +56,34 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Update gauge chart and activity text
   gaugeChart.update();
+
+  // Scroll-reveal animations
+  const revealEls = document.querySelectorAll('.reveal');
+  if (revealEls.length) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('reveal-in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    revealEls.forEach((el) => io.observe(el));
+  }
+
+  // Back to top behavior
+  const backToTopBtn = document.getElementById('backToTop');
+  if (backToTopBtn) {
+    const toggleBtn = () => {
+      if (window.scrollY > 300) backToTopBtn.classList.add('show');
+      else backToTopBtn.classList.remove('show');
+    };
+    toggleBtn();
+    window.addEventListener('scroll', toggleBtn, { passive: true });
+    backToTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
 });
 
 const gaugeData = {
@@ -131,6 +163,12 @@ const gaugeConfig = {
         },
       },
     },
+    animation: {
+      animateScale: true,
+      animateRotate: true,
+      duration: 900,
+      easing: 'easeOutCubic'
+    }
   },
   plugins: [gaugeNeedle],
 };
