@@ -11,29 +11,26 @@ document.addEventListener("DOMContentLoaded", function () {
   // Update the trend analysis button:
   // Set its text based on the activityTrend value...
   const trendButton = document.getElementById("trendButton");
-  switch (activityTrend) {
-    case 1:
-      trendButton.textContent = "📉 Decreasing";
-      break;
-    case 2:
-      trendButton.textContent = "➖ Staying the Same";
-      break;
-    case 3:
-      trendButton.textContent = "📈 Increasing";
-      break;
-  }
+  trendButton.style.backgroundColor = "transparent"; // Remove outside color for clarity
+  trendButton.style.color = "black"; // Keep main text black
 
-  // ...and set its background color based on the gauge's activity level colors.
-  switch (activityLevel) {
-    case 1:
-      trendButton.style.backgroundColor = "#00D26A"; // Green for Low
+  // Only the arrow changes color: green for decreasing, red for increasing; black for same
+  switch (activityTrend) {
+    case 1: {
+      const arrow = '<span style="color:#00D26A">▼</span>';
+      trendButton.innerHTML = `${arrow} Decreasing`;
       break;
-    case 2:
-      trendButton.style.backgroundColor = "#FCD53F"; // Yellow for Moderate
+    }
+    case 2: {
+      const symbol = '<span aria-hidden="true" style="display:inline-block;width:1em;height:8px;background:#000;vertical-align:middle;margin-right:6px;"></span>';
+      trendButton.innerHTML = `${symbol} Staying the Same`;
       break;
-    case 3:
-      trendButton.style.backgroundColor = "#F8312F"; // Red for High
+    }
+    case 3: {
+      const arrow = '<span style="color:#F8312F">▲</span>';
+      trendButton.innerHTML = `${arrow} Increasing`;
       break;
+    }
   }
 
   // Update the activity level text
