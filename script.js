@@ -1,6 +1,6 @@
 // Declare global variables
 // If you want to override the dynamic date, set updateDateOverride to a string date.
-const updateDateOverride = null; // e.g., "October 10, 2025"
+const updateDateOverride = "October 17, 2025";
 const activityLevel = 1; // 1=Low; 2=Moderate; 3=High
 const activityTrend = 2; // 1=Decrease; 2=Same; 3=Increase
 
@@ -177,5 +177,6 @@ const gaugeChart = new Chart(
   document.getElementById("doughnutChart"),
   gaugeConfig
 );
+
 
 
