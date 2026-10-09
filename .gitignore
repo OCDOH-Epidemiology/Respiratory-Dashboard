@@ -1,5 +1,6 @@
-# Source workbooks and build scripts stay on this machine.
-data/
+# Source workbooks stay on this machine. The public site reads data/weekly.json.
+data/*
+!data/weekly.json
 scripts/
 
 # macOS metadata and caches
