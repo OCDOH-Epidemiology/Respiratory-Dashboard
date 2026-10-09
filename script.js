@@ -17,6 +17,9 @@ const ACTIVITY = {
   trend: 3,
 };
 
+// Set to false to hide the School absenteeism section.
+const SHOW_SCHOOL_CHART = false;
+
 const LEVEL_LABELS = {
   1: "Low",
   2: "Moderate",
@@ -1351,7 +1354,12 @@ function refreshCharts({ resetBrushes = false, animate = true } = {}) {
   syncAllBrushUI(domainWeeks);
   buildEdChart(domainWeeks, { animate });
   buildAcuteEdChart(domainWeeks, { animate });
-  buildSchoolChart(domainWeeks, { animate });
+  if (SHOW_SCHOOL_CHART) {
+    buildSchoolChart(domainWeeks, { animate });
+  } else if (schoolChart) {
+    schoolChart.destroy();
+    schoolChart = null;
+  }
   refreshVaccinations();
 }
 
@@ -2048,7 +2056,14 @@ async function loadDashboardData() {
   return res.json();
 }
 
+function applySchoolChartVisibility() {
+  document.querySelectorAll("[data-school-chart]").forEach((el) => {
+    el.hidden = !SHOW_SCHOOL_CHART;
+  });
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
+  applySchoolChartVisibility();
   applyChartDefaults();
   initGauge();
   observeGaugeVisibility();

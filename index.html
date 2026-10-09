@@ -15,7 +15,7 @@
     <meta http-equiv='expires' content='0'>
     <meta http-equiv='pragma' content='no-cache'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Orange County Department of Health weekly dashboard for influenza, COVID-19, and RSV activity, emergency department visits, and school absenteeism." />
+    <meta name="description" content="Orange County Department of Health weekly dashboard for influenza, COVID-19, and RSV activity, and emergency department visits." />
     <meta name="theme-color" content="#004C7D" media="(prefers-color-scheme: dark)">
     <meta name="theme-color" content="#f3f5f8" media="(prefers-color-scheme: light)">
     <title>Orange County Respiratory Illness Dashboard</title>
@@ -152,7 +152,7 @@
 
         <section class="charts-section reveal mt-5" aria-labelledby="trends-heading">
             <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-3">
-                <h2 id="trends-heading" class="section-title mb-0">Trends over time</h2>
+                <h2 id="trends-heading" class="section-title mb-0">Emergency Department Visits</h2>
                 <div class="season-toggle" role="group" aria-label="Select time range">
                     <button type="button" class="season-btn active" data-range="season" aria-pressed="true">
                         Current season
@@ -246,14 +246,16 @@
                     </div>
                 </details>
             </div>
+        </section>
 
-            <div class="panel chart-panel mb-4">
-                <h3 class="chart-title" id="school-chart-title">School absenteeism</h3>
+        <section class="school-section reveal mt-5" id="schoolChartSection" data-school-chart hidden aria-labelledby="school-heading">
+            <h2 id="school-heading" class="section-title mb-3">School absenteeism</h2>
+            <div class="panel chart-panel mb-4" id="schoolChartPanel">
                 <p class="chart-caption" id="school-chart-caption">
                     Percent of students absent among schools in session (closures, holidays, and snow days excluded).
                     Point to a week on the chart for the date and value, or open the data table below the chart.
                 </p>
-                <div class="chart-canvas-wrap" role="img" aria-labelledby="school-chart-title" aria-describedby="school-chart-caption schoolChartSummary schoolBrushLabel">
+                <div class="chart-canvas-wrap" role="img" aria-labelledby="school-heading" aria-describedby="school-chart-caption schoolChartSummary schoolBrushLabel">
                     <canvas id="schoolChart" aria-hidden="true" tabindex="-1"></canvas>
                     <p id="schoolEmpty" class="chart-empty d-none">School absenteeism data coming soon.</p>
                 </div>
@@ -385,11 +387,15 @@
                         <div class="accordion-body">
                             <p>
                                 The activity dial is a countywide summary of respiratory illness intensity.
-                                Charts below show how COVID-19, flu, and RSV contribute over time, acute respiratory ED visit volume, and how school absenteeism is changing.
+                                Charts below show how COVID-19, flu, and RSV contribute over time and acute respiratory ED visit volume<span data-school-chart hidden>, and how school absenteeism is changing</span>.
                             </p>
-                            <p class="mb-0">
+                            <p>
                                 Levels can rise or fall week to week. Use the dial for a quick read of current conditions,
                                 and the trend charts to see which pathogens are driving activity during the season.
+                            </p>
+                            <p class="mb-0">
+                                Vaccination coverage shows New York State rates from the NYS COVID-19 and Influenza Vaccination Data dashboards.
+                                It is updated when the state posts new figures on its website, so it may not change every week.
                             </p>
                         </div>
                     </div>
@@ -409,8 +415,7 @@
                                 CDC and New York State guidance, facility protocols, and patient-specific risk factors.
                             </p>
                             <p class="mb-0">
-                                ED visit percentages, acute respiratory ED visit counts, and school absenteeism are surveillance indicators—not case counts.
-                                Laboratory reporting and hospital data may lag; interpret recent weeks with that delay in mind.
+                                Data may lag.
                             </p>
                         </div>
                     </div>
@@ -427,9 +432,9 @@
                         <div class="accordion-body">
                             <ul class="mb-0">
                                 <li>The current respiratory season is October 3, 2026 through May 7, 2027.</li>
-                                <li>“Current season” filters Trends over time charts to that window (from the season start onward as weekly data are added). After May 7, 2027, that completed season remains in the data file and is shown under “All available data,” which includes every week present in the file.</li>
+                                <li>“Current season” filters Emergency Department Visits charts to that window (from the season start onward as weekly data are added). After May 7, 2027, that completed season remains in the data file and is shown under “All available data,” which includes every week present in the file.</li>
                                 <li>Weekly points use week-ending dates. Point to a week on a chart for the week-ending date and values, or open “Show data table” under each chart for every week in the selected range. Press Escape to close a chart tooltip. Use the week-range sliders (arrow keys, Page Up/Page Down, Home, End) to narrow the weeks shown.</li>
-                                <li>School absenteeism is the countywide percent of students absent among schools that were open that week. Closed schools (holidays, snow days, and similar) are excluded. Summer weeks and full-closure weeks may be blank.</li>
+                                <li data-school-chart hidden>School absenteeism is the countywide percent of students absent among schools that were open that week. Closed schools (holidays, snow days, and similar) are excluded. Summer weeks and full-closure weeks may be blank.</li>
                                 <li>Data are loaded from <code>data/weekly.json</code>. Stub values may appear until the weekly export is connected.</li>
                             </ul>
                         </div>
