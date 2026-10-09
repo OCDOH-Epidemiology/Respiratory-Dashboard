@@ -1,7 +1,7 @@
 {
   "meta": {
-    "lastUpdated": "2026-10-10",
-    "lastUpdatedDisplay": "October 10, 2026",
+    "lastUpdated": "2026-10-03",
+    "lastUpdatedDisplay": "October 3, 2026",
     "seasonStart": "2026-10-03",
     "seasonEnd": "2027-05-07",
     "seasonLabel": "2026\u201327",
@@ -2178,17 +2178,6 @@
       "vaxCovid": null,
       "vaxFlu": null,
       "edAcuteRespiratory": 508
-    },
-    {
-      "weekEnding": "2026-10-10",
-      "edCovid": 0.0,
-      "edFlu": 1.03,
-      "edRsv": 0.06,
-      "schoolAbsenteeism": null,
-      "hospitalizations": null,
-      "vaxCovid": null,
-      "vaxFlu": null,
-      "edAcuteRespiratory": 214
     }
   ],
   "vaccinations": {
