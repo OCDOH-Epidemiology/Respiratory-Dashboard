@@ -8,7 +8,6 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-MSM3314X5V');
     </script>
     <meta charset="UTF-8" />
@@ -16,192 +15,495 @@
     <meta http-equiv='expires' content='0'>
     <meta http-equiv='pragma' content='no-cache'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)">
-    <meta name="theme-color" content="#f4f7fb" media="(prefers-color-scheme: light)">
+    <meta name="description" content="Orange County Department of Health weekly dashboard for influenza, COVID-19, and RSV activity, emergency department visits, and school absenteeism." />
+    <meta name="theme-color" content="#004C7D" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#f3f5f8" media="(prefers-color-scheme: light)">
     <title>Orange County Respiratory Illness Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="./style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.lordicon.com/lordicon.js"></script>
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
 </head>
 
 <body>
-        <div class="container my-4 reveal">
-            <h1 class="text-center"><strong>Orange County Department of Health Respiratory Illness
-                    Dashboard</strong>
-            </h1>
-            <br>
-            <p class="text-center">
-                Stay informed with real-time data on respiratory illnesses affecting Orange County. Our dashboard
-                provides up-to-date insights on
-                <a href="https://www.orangecountygov.com/2345/Influenza-Flu" target="_blank"
-                    rel="noopener noreferrer">Influenza (Flu)</a>,
-                <a href="https://www.orangecountygov.com/2341/COVID-19" target="_blank"
-                    rel="noopener noreferrer">COVID-19</a>, and
-                <a href="https://www.orangecountygov.com/2580/RSV-Respiratory-Syncytial-Virus" target="_blank"
-                    rel="noopener noreferrer">RSV</a>.
-                <br>Explore trends and access essential resources to help protect yourself and your community.<br><br>
-                <strong>Click below to learn more about each illness, including symptoms, prevention strategies, and
-                    local
-                    health services.</strong>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    <header class="site-masthead">
+        <div class="container masthead-inner">
+            <a class="brand-lockup" href="https://www.orangecountygov.com/2354/Health" target="_blank" rel="noopener noreferrer">
+                <img class="brand-mark"
+                     src="./assets/county-seal.png"
+                     alt=""
+                     width="56"
+                     height="56"
+                     decoding="async" />
+                <span class="brand-text">
+                    <span class="brand-org">Orange County</span>
+                    <span class="brand-dept">Department of Health</span>
+                </span>
+                <span class="visually-hidden">(opens in a new tab)</span>
+            </a>
+        </div>
+    </header>
+
+    <main id="main-content" class="container mb-4" tabindex="-1">
+        <div class="dashboard-header reveal">
+            <h1 class="page-title">Respiratory Illness Dashboard</h1>
+            <p class="lead-copy">
+                County-level activity for influenza (flu), COVID-19, and RSV—updated weekly from laboratory reports,
+                emergency department visits, school and facility reports, and related surveillance.
             </p>
-            <div class="alert alert-warning text-center mt-3" role="alert">
-                Dashboard last updated: <strong>5/1/26</strong>. The dashboard will remain closed until October.
+            <div id="statusAlert" class="status-banner mt-3 mb-0" role="status" aria-live="polite">
+                Dashboard last updated: <strong id="header-updated">—</strong>.
+                <span id="statusMessage"></span>
             </div>
+            <nav class="resource-links mt-3" aria-label="Illness resources">
+                <div class="resource-row">
+                    <a href="https://www.orangecountygov.com/2341/COVID-19"
+                       class="resource-link resource-covid"
+                       target="_blank" rel="noopener noreferrer">
+                        <lord-icon src="https://cdn.lordicon.com/vzomtgvp.json" trigger="hover"
+                                   style="width: 28px; height: 28px;" aria-hidden="true"></lord-icon>
+                        <span>COVID-19</span>
+                        <span class="visually-hidden">(opens in a new tab)</span>
+                    </a>
+                    <a href="https://www.orangecountygov.com/2345/Influenza-Flu"
+                       class="resource-link resource-flu"
+                       target="_blank" rel="noopener noreferrer">
+                        <lord-icon src="https://cdn.lordicon.com/arwxzizt.json" trigger="hover"
+                                   style="width: 28px; height: 28px;" aria-hidden="true"></lord-icon>
+                        <span>Flu</span>
+                        <span class="visually-hidden">(opens in a new tab)</span>
+                    </a>
+                    <a href="https://www.orangecountygov.com/2580/RSV-Respiratory-Syncytial-Virus"
+                       class="resource-link resource-rsv"
+                       target="_blank" rel="noopener noreferrer">
+                        <lord-icon src="https://cdn.lordicon.com/lhrqmkda.json" trigger="hover"
+                                   style="width: 28px; height: 28px;" aria-hidden="true"></lord-icon>
+                        <span>RSV</span>
+                        <span class="visually-hidden">(opens in a new tab)</span>
+                    </a>
+                </div>
+            </nav>
         </div>
 
-        <!-- Page Buttons -->
-        <section class="reveal">
-            <div class="container my-4">
-              <div class="row justify-content-center g-3">
-                <div class="col-12 col-sm-6 col-md-4 mb-2">
-                  <a href="https://www.orangecountygov.com/2341/COVID-19"
-                     class="btn btn-lg rounded-pill w-100 d-flex align-items-center justify-content-center btn-modern btn-covid"
-                     style="font-size: 1.25rem;"
-                     target="_blank" aria-label="Learn more about COVID-19 resources and information">
-                    <lord-icon src="https://cdn.lordicon.com/vzomtgvp.json" trigger="hover"
-                               style="width: 40px; height: 40px; margin-right: 12px;"></lord-icon>
-                    <span>COVID-19</span>
-                  </a>
+        <section class="hero-section reveal mt-4" aria-labelledby="activity-heading">
+            <h2 id="activity-heading" class="section-title text-center">
+                Activity as of <span id="update-date">—</span>
+            </h2>
+            <div class="panel hero-panel">
+                <div class="legend-container" role="list" aria-label="Activity level legend">
+                    <div class="legend-item" role="listitem">
+                        <span class="legend-color legend-low" aria-hidden="true"></span>
+                        <span>Low</span>
+                    </div>
+                    <div class="legend-item" role="listitem">
+                        <span class="legend-color legend-moderate" aria-hidden="true"></span>
+                        <span>Moderate</span>
+                    </div>
+                    <div class="legend-item" role="listitem">
+                        <span class="legend-color legend-high" aria-hidden="true"></span>
+                        <span>High</span>
+                    </div>
                 </div>
-                <div class="col-12 col-sm-6 col-md-4 mb-2">
-                  <a href="https://www.orangecountygov.com/2345/Influenza-Flu"
-                     class="btn btn-lg rounded-pill w-100 d-flex align-items-center justify-content-center btn-modern btn-flu"
-                     style="font-size: 1.25rem;"
-                     target="_blank" aria-label="Learn more about Influenza resources and information">
-                    <lord-icon src="https://cdn.lordicon.com/arwxzizt.json" trigger="hover"
-                               style="width: 40px; height: 40px; margin-right: 12px;"></lord-icon>
-                    <span>Flu</span>
-                  </a>
+                <div class="my-3 d-flex justify-content-center half-doughnut" aria-hidden="true">
+                    <canvas id="doughnutChart" tabindex="-1"></canvas>
                 </div>
-                <div class="col-12 col-sm-6 col-md-4 mb-2">
-                  <a href="https://www.orangecountygov.com/2580/RSV-Respiratory-Syncytial-Virus"
-                     class="btn btn-lg rounded-pill w-100 d-flex align-items-center justify-content-center btn-modern btn-rsv"
-                     style="font-size: 1.25rem;"
-                     target="_blank" aria-label="Learn more about RSV resources and information">
-                    <lord-icon src="https://cdn.lordicon.com/lhrqmkda.json" trigger="hover"
-                               style="width: 40px; height: 40px; margin-right: 12px;"></lord-icon>
-                    <span>RSV</span>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </section>          
-    </div>
-
-
-    <!-- Header with Date -->
-    <h2 class="text-center mt-4">Orange County Respiratory Illness Activity Levels as of <span id="update-date"></span></h2>
-
-    <div class="container my-4 reveal">
-        <!-- Gauge Chart Section with Legend -->
-        <div class="container p-3 modern-card">
-            <div class="legend-container">
-                <div class="legend-item" role="listitem" aria-label="Low">
-                    <span class="legend-color" style="background-color: #00D26A;"></span>
-                    <span>Low</span>
-                </div>
-                <div class="legend-item" role="listitem" aria-label="Moderate">
-                    <span class="legend-color" style="background-color: #FCD53F;"></span>
-                    <span>Moderate</span>
-                </div>
-                <div class="legend-item" role="listitem" aria-label="High">
-                    <span class="legend-color" style="background-color: #F8312F;"></span>
-                    <span>High</span>
+                <p class="activity-level text-center mb-3">
+                    <span id="activityText" class="activity-value"></span>
+                    <span class="activity-level-suffix"> Level</span>
+                </p>
+                <div class="trend-wrap">
+                    <p class="trend-label text-center mb-2" id="trendLabel">Overall trend</p>
+                    <div id="trendButton" class="trend-status"></div>
                 </div>
             </div>
-            <div class="my-4 d-flex justify-content-center half-doughnut">
-                <canvas id="doughnutChart"></canvas>
-            </div>
-            <!-- Activity text below gauge -->
-            <div class="text-center" style="font-size: 2rem; margin-top: 20px; font-weight: bold;">
-                <span id="activityText"></span>
-                <span style="color: black;"> Level</span>
-            </div>
-        </div>
+            <p class="section-caption text-center mt-3 mb-0">
+                The dial summarizes current respiratory illness intensity countywide.
+                Activity reflects laboratory reports, hospital visits, school and facility reports, and related surveillance for flu, COVID-19, and RSV.
+            </p>
 
-        <p class="text-center">The graph above displays the latest respiratory illness activity levels in Orange County, tracking <strong>Laboratory Reports, Hospital Visits, School and Facility Reports, and Wastewater Surveillance</strong> visits for Influenza (Flu), COVID-19, and RSV.<br>Activity levels indicate the intensity of respiratory illnesses circulating in the community.</p>
-        <div class="container my-3 reveal">
-            <div class="row text-center g-3">
-                <div class="col-md-4 p-3 info-box" style="background-color: #D0FBE0;">
-                    <h4 class="text-dark">🟢 Low</h4>
-                    <p class="text-dark">Fewer people are seeking medical care for respiratory symptoms. However, residents should remain cautious, especially during the peak of the flu season.</p>
+            <details class="level-guide mt-3">
+                <summary>What do Low, Moderate, and High mean?</summary>
+                <div class="level-guide-body">
+                    <dl class="level-defs">
+                        <div class="level-def level-low">
+                            <dt>Low</dt>
+                            <dd>Fewer people are seeking medical care for respiratory symptoms. Stay cautious during peak season.</dd>
+                        </div>
+                        <div class="level-def level-moderate">
+                            <dt>Moderate</dt>
+                            <dd>People are seeking care for respiratory symptoms. Stay up to date on vaccines and practice good hygiene.</dd>
+                        </div>
+                        <div class="level-def level-high">
+                            <dt>High</dt>
+                            <dd>More people are seeking care. Extra precautions—masking indoors and staying home when sick—are recommended.</dd>
+                        </div>
+                    </dl>
                 </div>
-                <div class="col-md-4 p-3 info-box" style="background-color: #FFE599;">
-                    <h4 class="text-dark">🟡 Moderate</h4>
-                    <p class="text-dark">People are seeking care for respiratory symptoms. Stay updated on vaccines and practice good hygiene.</p>
-                </div>
-                <div class="col-md-4 p-3 info-box" style="background-color: #FF9999;">
-                    <h4 class="text-dark">🔴 High</h4>
-                    <p class="text-dark">More people are seeking medical care for respiratory symptoms. Extra precautions, such as mask-wearing and staying home when sick, are recommended.</p>
-                </div>
-            </div>
-        </div>
+            </details>
+        </section>
 
-        <!-- Trend Analysis Section -->
-        <h2 class="text-center">Orange County Respiratory Trend Analysis</h2>
-        <div class="container my-3 p-3 modern-card reveal">
-            <button id="trendButton" type="button" class="btn btn-lg rounded-pill d-block w-100 btn-modern" style="font-size: 2rem; padding: 1rem;"></button>
-        </div>
-    </div>
-
-    <p class="text-center">The chart above tracks <strong>Respiratory Illness Trends</strong> in Orange County, showing how Influenza (Flu), COVID-19, and RSV are changing over time.<br>By analyzing patterns in <strong>Laboratory Reports, Hospital Visits, School and Facility Reports, and Wastewater Surveillance</strong>, we can determine whether respiratory illnesses are <strong>increasing, decreasing, or remaining stable</strong> in the community.</p>
-    <p class="text-center">Staying informed about these trends can help you make the best decisions to protect yourself, your family, and the community.<br>Check back for <strong>weekly updates</strong> to stay ahead of changing respiratory illness patterns.</p>
-    <div class="px-3 mb-2">
-        <h2>Actions You Can Take Based on Current Activity Level</h2>
-        <div class="accordion" id="accordionExample">
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingOne">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">Healthy Actions to Take at Any Disease Level
+        <section class="charts-section reveal mt-5" aria-labelledby="trends-heading">
+            <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-3">
+                <h2 id="trends-heading" class="section-title mb-0">Trends over time</h2>
+                <div class="season-toggle" role="group" aria-label="Select time range">
+                    <button type="button" class="season-btn active" data-range="season" aria-pressed="true">
+                        Current season
                     </button>
-                </h2>
-                <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
-                    data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                        <ul>
-                            <li>Get vaccinated against respiratory illnesses. COVID-19 and flu vaccines are recommended
-                                for people 6 months and older. RSV vaccine is recommended for people at high risk—talk
-                                with your health care provider for details. Go to <a href="https://www.vaccines.gov/en/" target="_blank">vaccines.gov</a> for a location near you.
-                            </li>
-                            <li>Wash hands often with soap and water for 20 seconds, especially after coughing or
-                                sneezing.</li>
-                            <li>Cover coughs and sneezes with a tissue or your elbow.</li>
-                            <li>Stay home if you are sick with respiratory illness to prevent spreading it to others.
-                                Return to normal activity when your symptoms have improved, and you are fever free for
-                                24 hours.</li>
-                        </ul>
+                    <button type="button" class="season-btn" data-range="all" aria-pressed="false">
+                        All available data
+                    </button>
+                </div>
+            </div>
+            <p id="rangeCaption" class="section-caption mb-3">Showing current respiratory season (2026–27): October 3, 2026 – May 7, 2027.</p>
+
+            <div class="panel chart-panel mb-4">
+                <h3 class="chart-title" id="ed-chart-title">Emergency department visit percentage</h3>
+                <p class="chart-caption" id="ed-chart-caption">
+                    Share of ED visits with COVID-19, flu, or RSV. Point to a week on the chart for the date and values, or open the data table below the chart.
+                </p>
+                <div class="chart-canvas-wrap" role="img" aria-labelledby="ed-chart-title" aria-describedby="ed-chart-caption edChartSummary edBrushLabel">
+                    <canvas id="edChart" aria-hidden="true" tabindex="-1"></canvas>
+                    <p id="edEmpty" class="chart-empty d-none">ED visit data coming soon.</p>
+                </div>
+                <div class="chart-brush d-none" id="edBrush" data-brush="ed">
+                    <p class="chart-brush-caption">
+                        <span class="visually-hidden">Selected weeks: </span>
+                        <span id="edBrushLabel" data-brush-label>—</span>
+                    </p>
+                    <div class="chart-brush-control" role="group" aria-label="Filter emergency department chart by week ending">
+                        <div class="chart-brush-rail">
+                            <div class="chart-brush-selection" data-brush-selection></div>
+                            <div class="chart-brush-handle" data-brush-handle="start" role="slider" tabindex="0" aria-label="Start week" aria-orientation="horizontal" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0"></div>
+                            <div class="chart-brush-handle" data-brush-handle="end" role="slider" tabindex="0" aria-label="End week" aria-orientation="horizontal" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0"></div>
+                        </div>
+                    </div>
+                </div>
+                <p id="edChartSummary" class="visually-hidden"></p>
+                <details class="data-table-disclosure d-none" id="edTableWrap" data-table-for="ed">
+                    <summary aria-label="Show or hide data table: Emergency department visit percentage"><span class="dt-show">Show data table</span><span class="dt-hide">Hide data table</span></summary>
+                    <div class="data-table-scroll" tabindex="0" role="region" aria-labelledby="edTableCaption">
+                        <table class="data-table">
+                            <caption id="edTableCaption">Emergency department visit percentage</caption>
+                            <thead>
+                                <tr>
+                                    <th scope="col">Week ending</th>
+                                    <th scope="col">COVID-19 (% of ED visits)</th>
+                                    <th scope="col">Flu (% of ED visits)</th>
+                                    <th scope="col">RSV (% of ED visits)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="edTableBody"></tbody>
+                        </table>
+                    </div>
+                </details>
+            </div>
+
+            <div class="panel chart-panel mb-4">
+                <h3 class="chart-title" id="acute-ed-chart-title">Acute respiratory emergency department visits</h3>
+                <p class="chart-caption" id="acute-ed-chart-caption">
+                    Weekly count of emergency department visits for acute respiratory illness.
+                    Point to a week on the chart for the date and value, or open the data table below the chart.
+                </p>
+                <div class="chart-canvas-wrap" role="img" aria-labelledby="acute-ed-chart-title" aria-describedby="acute-ed-chart-caption acuteEdChartSummary acuteEdBrushLabel">
+                    <canvas id="acuteEdChart" aria-hidden="true" tabindex="-1"></canvas>
+                    <p id="acuteEdEmpty" class="chart-empty d-none">Acute respiratory ED visit data coming soon.</p>
+                </div>
+                <div class="chart-brush d-none" id="acuteEdBrush" data-brush="acuteEd">
+                    <p class="chart-brush-caption">
+                        <span class="visually-hidden">Selected weeks: </span>
+                        <span id="acuteEdBrushLabel" data-brush-label>—</span>
+                    </p>
+                    <div class="chart-brush-control" role="group" aria-label="Filter acute respiratory ED chart by week ending">
+                        <div class="chart-brush-rail">
+                            <div class="chart-brush-selection" data-brush-selection></div>
+                            <div class="chart-brush-handle" data-brush-handle="start" role="slider" tabindex="0" aria-label="Start week" aria-orientation="horizontal" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0"></div>
+                            <div class="chart-brush-handle" data-brush-handle="end" role="slider" tabindex="0" aria-label="End week" aria-orientation="horizontal" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0"></div>
+                        </div>
+                    </div>
+                </div>
+                <p id="acuteEdChartSummary" class="visually-hidden"></p>
+                <details class="data-table-disclosure d-none" id="acuteEdTableWrap" data-table-for="acuteEd">
+                    <summary aria-label="Show or hide data table: Acute respiratory emergency department visits"><span class="dt-show">Show data table</span><span class="dt-hide">Hide data table</span></summary>
+                    <div class="data-table-scroll" tabindex="0" role="region" aria-labelledby="acuteEdTableCaption">
+                        <table class="data-table">
+                            <caption id="acuteEdTableCaption">Acute respiratory emergency department visits</caption>
+                            <thead>
+                                <tr>
+                                    <th scope="col">Week ending</th>
+                                    <th scope="col">Acute respiratory ED visits</th>
+                                </tr>
+                            </thead>
+                            <tbody id="acuteEdTableBody"></tbody>
+                        </table>
+                    </div>
+                </details>
+            </div>
+
+            <div class="panel chart-panel mb-4">
+                <h3 class="chart-title" id="school-chart-title">School absenteeism</h3>
+                <p class="chart-caption" id="school-chart-caption">
+                    Percent of students absent among schools in session (closures, holidays, and snow days excluded).
+                    Point to a week on the chart for the date and value, or open the data table below the chart.
+                </p>
+                <div class="chart-canvas-wrap" role="img" aria-labelledby="school-chart-title" aria-describedby="school-chart-caption schoolChartSummary schoolBrushLabel">
+                    <canvas id="schoolChart" aria-hidden="true" tabindex="-1"></canvas>
+                    <p id="schoolEmpty" class="chart-empty d-none">School absenteeism data coming soon.</p>
+                </div>
+                <div class="chart-brush d-none" id="schoolBrush" data-brush="school">
+                    <p class="chart-brush-caption">
+                        <span class="visually-hidden">Selected weeks: </span>
+                        <span id="schoolBrushLabel" data-brush-label>—</span>
+                    </p>
+                    <div class="chart-brush-control" role="group" aria-label="Filter school absenteeism chart by week ending">
+                        <div class="chart-brush-rail">
+                            <div class="chart-brush-selection" data-brush-selection></div>
+                            <div class="chart-brush-handle" data-brush-handle="start" role="slider" tabindex="0" aria-label="Start week" aria-orientation="horizontal" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0"></div>
+                            <div class="chart-brush-handle" data-brush-handle="end" role="slider" tabindex="0" aria-label="End week" aria-orientation="horizontal" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0"></div>
+                        </div>
+                    </div>
+                </div>
+                <p id="schoolChartSummary" class="visually-hidden"></p>
+                <details class="data-table-disclosure d-none" id="schoolTableWrap" data-table-for="school">
+                    <summary aria-label="Show or hide data table: School absenteeism"><span class="dt-show">Show data table</span><span class="dt-hide">Hide data table</span></summary>
+                    <div class="data-table-scroll" tabindex="0" role="region" aria-labelledby="schoolTableCaption">
+                        <table class="data-table">
+                            <caption id="schoolTableCaption">School absenteeism</caption>
+                            <thead>
+                                <tr>
+                                    <th scope="col">Week ending</th>
+                                    <th scope="col">Students absent (% of enrolled, open schools)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="schoolTableBody"></tbody>
+                        </table>
+                    </div>
+                </details>
+                <p class="chart-note">
+                    This chart shows <strong>overall student absenteeism</strong> among schools that were open that week:
+                    (sum of students absent ÷ sum of students assigned) × 100.
+                    Closed, holiday, and snow-day schools are left out.
+                    It is the percent of enrolled students absent for any reason—not percent absent specifically for respiratory illness.
+                </p>
+            </div>
+        </section>
+
+        <section class="vaccinations-section reveal mt-5" aria-labelledby="vaccinations-heading">
+            <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-3">
+                <h2 id="vaccinations-heading" class="section-title mb-0">Vaccinations</h2>
+                <div class="season-toggle" role="group" aria-label="Select vaccine">
+                    <button type="button" class="season-btn active" data-vax-pathogen="covid" aria-pressed="true">
+                        COVID-19
+                    </button>
+                    <button type="button" class="season-btn" data-vax-pathogen="flu" aria-pressed="false">
+                        Influenza
+                    </button>
+                </div>
+            </div>
+            <p id="vaxCaption" class="section-caption mb-3">
+                NYS vaccination coverage. Select Overall Coverage, Age, or Gender.
+            </p>
+
+            <div class="vax-dimension-toggle mb-3" role="group" aria-label="Select vaccination breakdown">
+                <button type="button" class="vax-dimension-btn active" data-vax-dimension="overall" aria-pressed="true">
+                    Overall Coverage
+                </button>
+                <button type="button" class="vax-dimension-btn" data-vax-dimension="age" aria-pressed="false">
+                    Age
+                </button>
+                <button type="button" class="vax-dimension-btn" data-vax-dimension="gender" aria-pressed="false">
+                    Gender
+                </button>
+            </div>
+
+            <div class="panel chart-panel mb-2">
+                <div id="vaxChartStage" class="vax-chart-stage">
+                    <h3 class="chart-title" id="vax-chart-title">Total up-to-date COVID-19 vaccine coverage</h3>
+                    <p class="chart-caption" id="vax-chart-caption">
+                        Percent of the population vaccinated (NYS).
+                    </p>
+
+                    <div id="vaxOverallWrap" class="vax-overall-wrap">
+                        <div class="vax-donut-wrap" role="img" aria-labelledby="vax-chart-title" aria-describedby="vax-chart-caption vaxChartSummary">
+                            <canvas id="vaxDonutChart" aria-hidden="true" tabindex="-1"></canvas>
+                            <div class="vax-donut-center" aria-hidden="true">
+                                <span id="vaxDonutValue">—</span>
+                            </div>
+                            <span class="vax-donut-min" aria-hidden="true">0%</span>
+                            <span class="vax-donut-max" aria-hidden="true">100%</span>
+                        </div>
+                    </div>
+
+                    <div id="vaxBarWrap" class="chart-canvas-wrap d-none" role="img" aria-labelledby="vax-chart-title" aria-describedby="vax-chart-caption vaxChartSummary">
+                        <canvas id="vaxBarChart" aria-hidden="true" tabindex="-1"></canvas>
+                    </div>
+
+                    <p id="vaxChartSummary" class="visually-hidden"></p>
+                    <p id="vaxEmpty" class="chart-empty d-none">Vaccination data coming soon.</p>
+                    <details class="data-table-disclosure d-none" id="vaxTableWrap" data-table-for="vax">
+                        <summary aria-label="Show or hide data table: Vaccination coverage"><span class="dt-show">Show data table</span><span class="dt-hide">Hide data table</span></summary>
+                        <div class="data-table-scroll" tabindex="0" role="region" aria-labelledby="vaxTableCaption">
+                            <table class="data-table">
+                                <caption id="vaxTableCaption">Vaccination coverage</caption>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Group</th>
+                                        <th scope="col">Percent vaccinated</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="vaxTableBody"></tbody>
+                            </table>
+                        </div>
+                    </details>
+                </div>
+            </div>
+
+            <p id="vaxFootnote" class="chart-note vax-footnote">
+                Coverage figures are New York State vaccination rates from the NYS COVID-19 and Influenza Vaccination Data dashboards.
+            </p>
+        </section>
+
+        <section class="context-section reveal mt-5" aria-labelledby="context-heading">
+            <h2 id="context-heading" class="section-title">About this dashboard</h2>
+            <div class="accordion" id="contextAccordion">
+                <div class="accordion-item">
+                    <h3 class="accordion-header" id="headingInterp">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseInterp" aria-expanded="false" aria-controls="collapseInterp">
+                            Dashboard interpretation
+                        </button>
+                    </h3>
+                    <div id="collapseInterp" class="accordion-collapse collapse" aria-labelledby="headingInterp"
+                        data-bs-parent="#contextAccordion">
+                        <div class="accordion-body">
+                            <p>
+                                The activity dial is a countywide summary of respiratory illness intensity.
+                                Charts below show how COVID-19, flu, and RSV contribute over time, acute respiratory ED visit volume, and how school absenteeism is changing.
+                            </p>
+                            <p class="mb-0">
+                                Levels can rise or fall week to week. Use the dial for a quick read of current conditions,
+                                and the trend charts to see which pathogens are driving activity during the season.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h3 class="accordion-header" id="headingProviders">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseProviders" aria-expanded="false" aria-controls="collapseProviders">
+                            For healthcare providers
+                        </button>
+                    </h3>
+                    <div id="collapseProviders" class="accordion-collapse collapse" aria-labelledby="headingProviders"
+                        data-bs-parent="#contextAccordion">
+                        <div class="accordion-body">
+                            <p>
+                                This dashboard is intended for public awareness. Clinical decisions should follow current
+                                CDC and New York State guidance, facility protocols, and patient-specific risk factors.
+                            </p>
+                            <p class="mb-0">
+                                ED visit percentages, acute respiratory ED visit counts, and school absenteeism are surveillance indicators—not case counts.
+                                Laboratory reporting and hospital data may lag; interpret recent weeks with that delay in mind.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h3 class="accordion-header" id="headingTech">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseTech" aria-expanded="false" aria-controls="collapseTech">
+                            Technical notes
+                        </button>
+                    </h3>
+                    <div id="collapseTech" class="accordion-collapse collapse" aria-labelledby="headingTech"
+                        data-bs-parent="#contextAccordion">
+                        <div class="accordion-body">
+                            <ul class="mb-0">
+                                <li>The current respiratory season is October 3, 2026 through May 7, 2027.</li>
+                                <li>“Current season” filters Trends over time charts to that window (from the season start onward as weekly data are added). After May 7, 2027, that completed season remains in the data file and is shown under “All available data,” which includes every week present in the file.</li>
+                                <li>Weekly points use week-ending dates. Point to a week on a chart for the week-ending date and values, or open “Show data table” under each chart for every week in the selected range. Press Escape to close a chart tooltip. Use the week-range sliders (arrow keys, Page Up/Page Down, Home, End) to narrow the weeks shown.</li>
+                                <li>School absenteeism is the countywide percent of students absent among schools that were open that week. Closed schools (holidays, snow days, and similar) are excluded. Summer weeks and full-closure weeks may be blank.</li>
+                                <li>Data are loaded from <code>data/weekly.json</code>. Stub values may appear until the weekly export is connected.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingTwo">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                        When Levels are High and Above
-                    </button>
-                </h2>
-                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
-                    data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                        <ul>
-                            <li>Consider wearing a well-fitted mask when around others indoors.</li>
-                            <li>Avoid crowded areas when possible.</li>
-                            <li>Improve air quality by bringing in fresh air from outside (opening doors or windows or
-                                using exhaust fans), purifying air indoors, or gathering outdoors.</li>
-                        </ul>
+        </section>
+
+        <section class="actions-section reveal mt-5 mb-4" aria-labelledby="actions-heading">
+            <h2 id="actions-heading" class="section-title">Actions you can take</h2>
+            <div class="accordion" id="actionsAccordion">
+                <div class="accordion-item">
+                    <h3 class="accordion-header" id="headingActionsAny">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseActionsAny" aria-expanded="false" aria-controls="collapseActionsAny">
+                            Healthy actions at any activity level
+                        </button>
+                    </h3>
+                    <div id="collapseActionsAny" class="accordion-collapse collapse" aria-labelledby="headingActionsAny"
+                        data-bs-parent="#actionsAccordion">
+                        <div class="accordion-body">
+                            <ul>
+                                <li>Get vaccinated against respiratory illnesses. COVID-19 and flu vaccines are recommended
+                                    for people 6 months and older. RSV vaccine is recommended for people at high risk—talk
+                                    with your health care provider for details. Go to
+                                    <a href="https://www.vaccines.gov/en/" target="_blank" rel="noopener noreferrer">vaccines.gov<span class="visually-hidden"> (opens in a new tab)</span></a>
+                                    for a location near you.
+                                </li>
+                                <li>Wash hands often with soap and water for 20 seconds, especially after coughing or sneezing.</li>
+                                <li>Cover coughs and sneezes with a tissue or your elbow.</li>
+                                <li>Stay home if you are sick with respiratory illness. Return to normal activity when
+                                    symptoms have improved and you are fever-free for 24 hours.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h3 class="accordion-header" id="headingActionsHigh">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseActionsHigh" aria-expanded="false" aria-controls="collapseActionsHigh">
+                            When levels are high
+                        </button>
+                    </h3>
+                    <div id="collapseActionsHigh" class="accordion-collapse collapse" aria-labelledby="headingActionsHigh"
+                        data-bs-parent="#actionsAccordion">
+                        <div class="accordion-body">
+                            <ul>
+                                <li>Consider wearing a well-fitted mask when around others indoors.</li>
+                                <li>Avoid crowded areas when possible.</li>
+                                <li>Improve air quality by bringing in fresh air from outside, purifying air indoors, or gathering outdoors.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
+        </section>
+    </main>
+
+    <div id="liveAnnouncer" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"></div>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p class="mb-1">Orange County Department of Health</p>
+            <p class="mb-0 footer-meta">
+                <a href="https://www.orangecountygov.com/2354/Health" target="_blank" rel="noopener noreferrer">Health home<span class="visually-hidden"> (opens in a new tab)</span></a>
+                <span aria-hidden="true"> · </span>
+                <a href="https://www.orangecountygov.com/accessibility" target="_blank" rel="noopener noreferrer">Accessibility<span class="visually-hidden"> (opens in a new tab)</span></a>
+            </p>
         </div>
-    </div>
+    </footer>
 
     <script src="./script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">▲</button>
+    <button type="button" id="backToTop" class="back-to-top" aria-label="Back to top" hidden>▲</button>
 </body>
 
 </html>
-

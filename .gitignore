@@ -1,0 +1,10 @@
+# Source workbooks and build scripts stay on this machine.
+data/
+scripts/
+
+# macOS metadata and caches
+._*
+.DS_Store
+__pycache__/
+*.pyc
+~$*
