@@ -1,11 +1,11 @@
 {
   "meta": {
-    "lastUpdated": "2026-10-03",
-    "lastUpdatedDisplay": "October 3, 2026",
+    "lastUpdated": "2026-10-10",
+    "lastUpdatedDisplay": "October 10, 2026",
     "seasonStart": "2026-10-03",
     "seasonEnd": "2027-05-07",
     "seasonLabel": "2026\u201327",
-    "notes": "School absenteeism from School Masterlist (open schools only; closures/holidays/snow days excluded). ED COVID/flu/RSV % and acute respiratory visit counts from Respiratory Dashboard ESSS (Updated).xlsx (pathogen Total \u00f7 All Visits Total \u00d7 100; acute = Acute Respiratory Total). Vaccination coverage from the Vaccinations sheet (NYS snapshot). Current respiratory season: October 3, 2026 through May 7, 2027."
+    "notes": "School absenteeism from School Masterlist (open schools only; closures/holidays/snow days excluded). ED COVID/flu/RSV % and acute respiratory visit counts from Respiratory Dashboard ESSS (Updated).xlsx (pathogen Total \u00f7 All Visits Total \u00d7 100; acute = Acute Respiratory Total). Vaccination coverage from the Vaccinations sheet (NYS snapshot)."
   },
   "activity": {
     "level": 1,
@@ -2150,34 +2150,45 @@
       "weekEnding": "2026-09-19",
       "edCovid": 0.37,
       "edFlu": 0.72,
-      "edRsv": 0.22,
+      "edRsv": 0.17,
       "schoolAbsenteeism": null,
       "hospitalizations": null,
       "vaxCovid": null,
       "vaxFlu": null,
-      "edAcuteRespiratory": 498
+      "edAcuteRespiratory": 499
     },
     {
       "weekEnding": "2026-09-26",
-      "edCovid": 0.13,
-      "edFlu": 0.56,
+      "edCovid": 0.55,
+      "edFlu": 0.55,
       "edRsv": 0.05,
       "schoolAbsenteeism": null,
       "hospitalizations": null,
       "vaxCovid": null,
       "vaxFlu": null,
-      "edAcuteRespiratory": 438
+      "edAcuteRespiratory": 446
     },
     {
       "weekEnding": "2026-10-03",
-      "edCovid": 0.0,
-      "edFlu": 0.0,
-      "edRsv": 0.32,
+      "edCovid": 0.1,
+      "edFlu": 0.61,
+      "edRsv": 0.25,
       "schoolAbsenteeism": null,
       "hospitalizations": null,
       "vaxCovid": null,
       "vaxFlu": null,
-      "edAcuteRespiratory": 40
+      "edAcuteRespiratory": 508
+    },
+    {
+      "weekEnding": "2026-10-10",
+      "edCovid": 0.0,
+      "edFlu": 1.03,
+      "edRsv": 0.06,
+      "schoolAbsenteeism": null,
+      "hospitalizations": null,
+      "vaxCovid": null,
+      "vaxFlu": null,
+      "edAcuteRespiratory": 214
     }
   ],
   "vaccinations": {
