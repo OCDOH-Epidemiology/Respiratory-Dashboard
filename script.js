@@ -14,7 +14,7 @@ const LAST_UPDATED = "October 9, 2026";
 
 const ACTIVITY = {
   level: 2,
-  trend: 3,
+  trend: 2,
 };
 
 // Set to false to hide the School absenteeism section.
@@ -135,6 +135,7 @@ let schoolChart = null;
 let vaxDonutChart = null;
 let vaxBarChart = null;
 let vaxPathogen = "covid"; // "covid" | "flu"
+let vaxPlace = "nys"; // "nys" | "orangeCounty"
 let vaxDimension = "overall"; // "overall" | "age" | "gender"
 let vaxTransitionToken = 0;
 let vaxHasRendered = false;
@@ -154,6 +155,14 @@ const VAX_PATHOGEN_LABELS = {
   covid: "COVID-19",
   flu: "Influenza",
 };
+const VAX_PLACE_LABELS = {
+  nys: "New York State",
+  orangeCounty: "Orange County",
+};
+
+function vaxPlaceLabel() {
+  return VAX_PLACE_LABELS[vaxPlace] || "New York State";
+}
 
 function parseISODate(iso) {
   const [y, m, d] = iso.split("-").map(Number);
@@ -949,13 +958,15 @@ function brushWindow(domainWeeks, brushKey) {
 }
 
 /**
- * One visible week: center the point. Two+: normal edge-to-edge line chart.
- * Also enlarges lone points so a single week is easy to see.
+ * Keep week markers inside the plot. Category offset adds half a slot of
+ * space on each side, so one week is centered and two or more are not
+ * clipped against the y-axis or the right edge.
+ * Also enlarges a lone point so a single week is easy to see.
  */
 function applySparseXLayout(chart, visibleCount) {
   if (!chart?.options?.scales?.x) return;
   const single = visibleCount <= 1;
-  chart.options.scales.x.offset = single;
+  chart.options.scales.x.offset = true;
   for (const ds of chart.data.datasets) {
     if (ds._sparseBaseRadius == null) {
       ds._sparseBaseRadius = ds.pointRadius ?? 2;
@@ -1093,7 +1104,7 @@ function buildEdChart(domainWeeks, { animate = true } = {}) {
         x: {
           min: brush.start,
           max: brush.end,
-          offset: visible.length <= 1,
+          offset: true,
           ticks: {
             maxRotation: 45,
             autoSkip: true,
@@ -1194,7 +1205,7 @@ function buildAcuteEdChart(domainWeeks, { animate = true } = {}) {
         x: {
           min: brush.start,
           max: brush.end,
-          offset: visible.length <= 1,
+          offset: true,
           ticks: {
             maxRotation: 45,
             autoSkip: true,
@@ -1291,7 +1302,7 @@ function buildSchoolChart(domainWeeks, { animate = true } = {}) {
         x: {
           min: brush.start,
           max: brush.end,
-          offset: visible.length <= 1,
+          offset: true,
           ticks: {
             maxRotation: 45,
             autoSkip: true,
@@ -1393,7 +1404,28 @@ const barValueLabels = {
 function getVaxPathogenData() {
   const vax = dashboardData?.vaccinations;
   if (!vax) return null;
-  return vax[vaxPathogen] || null;
+  const place = vax[vaxPlace];
+  if (!place) return null;
+  return place[vaxPathogen] || null;
+}
+
+function syncVaxPlaceControls() {
+  const nys = vaxPlace === "nys";
+  const genderBtn = document.querySelector('[data-vax-dimension="gender"]');
+  if (genderBtn) {
+    genderBtn.disabled = nys;
+    genderBtn.setAttribute("aria-disabled", nys ? "true" : "false");
+  }
+  const note = document.getElementById("vaxGenderNote");
+  if (note) note.classList.toggle("d-none", !nys);
+  if (nys && vaxDimension === "gender") {
+    vaxDimension = "overall";
+    document.querySelectorAll("[data-vax-dimension]").forEach((b) => {
+      const active = b.getAttribute("data-vax-dimension") === "overall";
+      b.classList.toggle("active", active);
+      b.setAttribute("aria-pressed", active ? "true" : "false");
+    });
+  }
 }
 
 function updateVaxTitles() {
@@ -1402,18 +1434,16 @@ function updateVaxTitles() {
   const captionEl = document.getElementById("vax-chart-caption");
   if (!titleEl || !captionEl) return;
 
+  const place = vaxPlaceLabel();
   if (vaxDimension === "overall") {
     titleEl.textContent = `Total up-to-date ${pathogenLabel} vaccine coverage`;
-    captionEl.textContent =
-      "Percent of the New York State population vaccinated.";
+    captionEl.textContent = `Percent of the ${place} population vaccinated.`;
   } else if (vaxDimension === "age") {
     titleEl.textContent = `${pathogenLabel} vaccination by age`;
-    captionEl.textContent =
-      "Percent vaccinated in each age group (NYS).";
+    captionEl.textContent = `Percent vaccinated in each age group (${place}).`;
   } else {
     titleEl.textContent = `${pathogenLabel} vaccination by gender`;
-    captionEl.textContent =
-      "Percent vaccinated by gender (NYS).";
+    captionEl.textContent = `Percent vaccinated by gender (${place}).`;
   }
 }
 
@@ -1428,15 +1458,16 @@ function updateVaxCaptionAndFootnote() {
       caption.textContent = "Vaccination coverage data is not available yet.";
     } else {
       const asOf = vax.asOfDisplay || (vax.asOf ? formatDisplayDate(vax.asOf) : null);
+      const place = vaxPlaceLabel();
       caption.textContent = asOf
-        ? `Showing ${pathogenLabel} coverage as of ${asOf}.`
-        : `Showing ${pathogenLabel} coverage.`;
+        ? `Showing ${place} ${pathogenLabel} coverage as of ${asOf}.`
+        : `Showing ${place} ${pathogenLabel} coverage.`;
     }
   }
 
   if (footnote && vax) {
     const parts = [
-      "Coverage figures are New York State vaccination rates.",
+      `Coverage figures are ${vaxPlaceLabel()} vaccination rates.`,
     ];
     if (vax.asOfDisplay || vax.asOf) {
       parts.push(
@@ -1539,13 +1570,14 @@ function buildVaxDonut(percent) {
   }
 
   const pathogenLabel = VAX_PATHOGEN_LABELS[vaxPathogen] || "COVID-19";
+  const place = vaxPlaceLabel();
   setText(
     "vaxChartSummary",
-    `Total up-to-date ${pathogenLabel} vaccine coverage: ${formatVaxPercent(percent)}.`
+    `Total up-to-date ${pathogenLabel} vaccine coverage in ${place}: ${formatVaxPercent(percent)}.`
   );
   renderVaxTable(
-    [["All ages (New York State)", percent]],
-    `Total up-to-date ${pathogenLabel} vaccine coverage (percent of population)`
+    [[`All ages (${place})`, percent]],
+    `Total up-to-date ${pathogenLabel} vaccine coverage (percent of the ${place} population)`
   );
 }
 
@@ -1569,15 +1601,16 @@ function applyVaxBarCopy(map, axisLabel) {
   const labels = Object.keys(map || {});
   const values = labels.map((k) => map[k]);
   const pathogenLabel = VAX_PATHOGEN_LABELS[vaxPathogen] || "COVID-19";
+  const place = vaxPlaceLabel();
   const dimLabel = vaxDimension === "age" ? "age" : "gender";
   const parts = labels.map((lab, i) => `${lab} ${formatVaxPercent(values[i])}`);
   setText(
     "vaxChartSummary",
-    `${pathogenLabel} vaccination by ${dimLabel}: ${parts.join("; ")}.`
+    `${pathogenLabel} vaccination by ${dimLabel} in ${place}: ${parts.join("; ")}.`
   );
   renderVaxTable(
     labels.map((lab, i) => [lab, values[i]]),
-    `${pathogenLabel} vaccination by ${dimLabel} (percent vaccinated, NYS)`
+    `${pathogenLabel} vaccination by ${dimLabel} (percent vaccinated, ${place})`
   );
   return { labels, values };
 }
@@ -1666,6 +1699,7 @@ function flushPendingVaxBarBuild() {
 }
 
 function renderVaccinationsContent({ deferBarChart = false } = {}) {
+  syncVaxPlaceControls();
   updateVaxTitles();
   updateVaxCaptionAndFootnote();
   vaxBarPendingBuild = null;
@@ -1698,8 +1732,8 @@ function renderVaccinationsContent({ deferBarChart = false } = {}) {
     setText(
       "vaxChartSummary",
       vaxDimension === "age"
-        ? "Vaccination by age is not available."
-        : "Vaccination by gender is not available."
+        ? `Vaccination by age is not available for ${vaxPlaceLabel()}.`
+        : `Vaccination by gender is not available for ${vaxPlaceLabel()}.`
     );
     return;
   }
@@ -1958,6 +1992,21 @@ function bindChartBrushes() {
 }
 
 function bindVaxToggles() {
+  const placeBtns = document.querySelectorAll("[data-vax-place]");
+  placeBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const next = btn.getAttribute("data-vax-place");
+      if (!next || next === vaxPlace) return;
+      vaxPlace = next;
+      placeBtns.forEach((b) => {
+        const active = b === btn;
+        b.classList.toggle("active", active);
+        b.setAttribute("aria-pressed", active ? "true" : "false");
+      });
+      refreshVaccinations({ animate: true }).then(announceVaxChange);
+    });
+  });
+
   const pathogenBtns = document.querySelectorAll("[data-vax-pathogen]");
   pathogenBtns.forEach((btn) => {
     btn.addEventListener("click", () => {

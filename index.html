@@ -298,38 +298,51 @@
         </section>
 
         <section class="vaccinations-section reveal mt-5" aria-labelledby="vaccinations-heading">
-            <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-3">
+            <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3 mb-3">
                 <h2 id="vaccinations-heading" class="section-title mb-0">Vaccinations</h2>
-                <div class="season-toggle" role="group" aria-label="Select vaccine">
-                    <button type="button" class="season-btn active" data-vax-pathogen="covid" aria-pressed="true">
-                        COVID-19
-                    </button>
-                    <button type="button" class="season-btn" data-vax-pathogen="flu" aria-pressed="false">
-                        Influenza
-                    </button>
+                <div class="d-flex flex-wrap gap-2">
+                    <div class="season-toggle" role="group" aria-label="Select place">
+                        <button type="button" class="season-btn active" data-vax-place="nys" aria-pressed="true">
+                            New York State
+                        </button>
+                        <button type="button" class="season-btn" data-vax-place="orangeCounty" aria-pressed="false">
+                            Orange County
+                        </button>
+                    </div>
+                    <div class="season-toggle" role="group" aria-label="Select vaccine">
+                        <button type="button" class="season-btn active" data-vax-pathogen="covid" aria-pressed="true">
+                            COVID-19
+                        </button>
+                        <button type="button" class="season-btn" data-vax-pathogen="flu" aria-pressed="false">
+                            Influenza
+                        </button>
+                    </div>
                 </div>
             </div>
             <p id="vaxCaption" class="section-caption mb-3">
-                NYS vaccination coverage. Select Overall Coverage, Age, or Gender.
+                New York State vaccination coverage. Select Overall Coverage or Age.
             </p>
 
-            <div class="vax-dimension-toggle mb-3" role="group" aria-label="Select vaccination breakdown">
+            <div class="vax-dimension-toggle mb-2" role="group" aria-label="Select vaccination breakdown">
                 <button type="button" class="vax-dimension-btn active" data-vax-dimension="overall" aria-pressed="true">
                     Overall Coverage
                 </button>
                 <button type="button" class="vax-dimension-btn" data-vax-dimension="age" aria-pressed="false">
                     Age
                 </button>
-                <button type="button" class="vax-dimension-btn" data-vax-dimension="gender" aria-pressed="false">
+                <button type="button" class="vax-dimension-btn" data-vax-dimension="gender" aria-pressed="false" disabled aria-disabled="true">
                     Gender
                 </button>
             </div>
+            <p id="vaxGenderNote" class="section-caption mb-3">
+                A gender breakdown is not available for New York State.
+            </p>
 
             <div class="panel chart-panel mb-2">
                 <div id="vaxChartStage" class="vax-chart-stage">
                     <h3 class="chart-title" id="vax-chart-title">Total up-to-date COVID-19 vaccine coverage</h3>
                     <p class="chart-caption" id="vax-chart-caption">
-                        Percent of the population vaccinated (NYS).
+                        Percent of the New York State population vaccinated.
                     </p>
 
                     <div id="vaxOverallWrap" class="vax-overall-wrap">
@@ -394,8 +407,11 @@
                                 and the trend charts to see which pathogens are driving activity during the season.
                             </p>
                             <p class="mb-0">
-                                Vaccination coverage shows New York State rates from the NYS COVID-19 and Influenza Vaccination Data dashboards.
-                                It is updated when the state posts new figures on its website, so it may not change every week.
+                                Vaccination coverage can show New York State or Orange County.
+                                Statewide figures are overall coverage and ages 0–18 and 19+.
+                                Detailed age bands and gender are Orange County.
+                                Figures come from the NYS COVID-19 and Influenza Vaccination Data dashboards
+                                and are updated when new numbers are posted, so they may not change every week.
                             </p>
                         </div>
                     </div>
@@ -460,7 +476,7 @@
                                 <li>Get vaccinated against respiratory illnesses. COVID-19 and flu vaccines are recommended
                                     for people 6 months and older. RSV vaccine is recommended for people at high risk—talk
                                     with your health care provider for details. Go to
-                                    <a href="https://www.vaccines.gov/en/" target="_blank" rel="noopener noreferrer">vaccines.gov<span class="visually-hidden"> (opens in a new tab)</span></a>
+                                    <a href="https://vaccinefinder.org/" target="_blank" rel="noopener noreferrer">vaccinefinder.org<span class="visually-hidden"> (opens in a new tab)</span></a>
                                     for a location near you.
                                 </li>
                                 <li>Wash hands often with soap and water for 20 seconds, especially after coughing or sneezing.</li>

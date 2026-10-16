@@ -1,7 +1,7 @@
 {
   "meta": {
-    "lastUpdated": "2026-10-03",
-    "lastUpdatedDisplay": "October 3, 2026",
+    "lastUpdated": "2026-10-10",
+    "lastUpdatedDisplay": "October 10, 2026",
     "seasonStart": "2026-10-03",
     "seasonEnd": "2027-05-07",
     "seasonLabel": "2026\u201327",
@@ -2166,63 +2166,96 @@
       "hospitalizations": null,
       "vaxCovid": null,
       "vaxFlu": null,
-      "edAcuteRespiratory": 446
+      "edAcuteRespiratory": 447
     },
     {
       "weekEnding": "2026-10-03",
-      "edCovid": 0.1,
-      "edFlu": 0.61,
+      "edCovid": 0.4,
+      "edFlu": 0.6,
       "edRsv": 0.25,
       "schoolAbsenteeism": null,
       "hospitalizations": null,
       "vaxCovid": null,
       "vaxFlu": null,
-      "edAcuteRespiratory": 508
+      "edAcuteRespiratory": 536
+    },
+    {
+      "weekEnding": "2026-10-10",
+      "edCovid": 0.05,
+      "edFlu": 0.88,
+      "edRsv": 0.08,
+      "schoolAbsenteeism": null,
+      "hospitalizations": null,
+      "vaxCovid": null,
+      "vaxFlu": null,
+      "edAcuteRespiratory": 461
     }
   ],
   "vaccinations": {
-    "asOf": "2026-10-07",
-    "asOfDisplay": "October 7, 2026",
+    "asOf": "2026-10-14",
+    "asOfDisplay": "October 14, 2026",
     "sourceUrl": "https://coronavirus.health.ny.gov/covid-19-and-influenza-vaccination-data",
     "demographicsUrl": "https://coronavirus.health.ny.gov/covid-19-and-influenza-vaccination-demographics",
-    "covid": {
-      "overallPercent": 1.3,
-      "doses": 5460,
-      "byAge": {
-        "0-4": 0.0,
-        "5\u201311": 0.1,
-        "12\u201318": 0.2,
-        "19\u201325": 0.3,
-        "26\u201334": 0.6,
-        "35\u201344": 0.6,
-        "45\u201354": 0.7,
-        "55\u201364": 1.7,
-        "65\u201374": 4.4,
-        "75+": 6.0
+    "nys": {
+      "covid": {
+        "overallPercent": 3.1,
+        "doses": 350244,
+        "byAge": {
+          "Ages 0\u201318": 0.5,
+          "Ages 19+": 3.8
+        },
+        "byGender": null
       },
-      "byGender": {
-        "Female": 1.4,
-        "Male": 1.2
+      "flu": {
+        "overallPercent": 10.5,
+        "doses": 1204029,
+        "byAge": {
+          "Ages 0\u201318": 8.2,
+          "Ages 19+": 11.2
+        },
+        "byGender": null
       }
     },
-    "flu": {
-      "overallPercent": 5.2,
-      "doses": 21564,
-      "byAge": {
-        "0-4": 3.6,
-        "5\u201311": 3.9,
-        "12\u201318": 3.7,
-        "19\u201325": 2.7,
-        "26\u201334": 2.6,
-        "35\u201344": 2.8,
-        "45\u201354": 4.0,
-        "55\u201364": 7.3,
-        "65\u201374": 10.6,
-        "75+": 13.7
+    "orangeCounty": {
+      "covid": {
+        "overallPercent": 1.7,
+        "doses": 7294,
+        "byAge": {
+          "0-4": 0.0,
+          "5\u201311": 0.1,
+          "12\u201318": 0.3,
+          "19\u201325": 0.5,
+          "26\u201334": 0.7,
+          "35\u201344": 0.9,
+          "45\u201354": 1.0,
+          "55\u201364": 2.3,
+          "65\u201374": 5.9,
+          "75+": 7.9
+        },
+        "byGender": {
+          "Female": 1.9,
+          "Male": 1.6
+        }
       },
-      "byGender": {
-        "Female": 5.8,
-        "Male": 4.5
+      "flu": {
+        "overallPercent": 6.9,
+        "doses": 28867,
+        "byAge": {
+          "0-4": 5.0,
+          "5\u201311": 5.0,
+          "12\u201318": 4.1,
+          "19\u201325": 3.6,
+          "26\u201334": 3.4,
+          "35\u201344": 3.7,
+          "45\u201354": 5.3,
+          "55\u201364": 9.9,
+          "65\u201374": 14.1,
+          "75+": 18.3
+        },
+        "byGender": {
+          "Female": 7.8,
+          "Male": 6.0
+        }
       }
     }
   }

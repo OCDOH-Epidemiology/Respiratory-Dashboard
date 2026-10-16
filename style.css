@@ -536,6 +536,16 @@ h1, h2, h3, h4 {
     color: #fff;
 }
 
+.vax-dimension-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+}
+
+.vax-dimension-btn:disabled:hover {
+    border-color: var(--border-strong);
+    color: var(--ink);
+}
+
 .vax-dimension-btn:focus-visible {
     outline: 3px solid var(--focus);
     outline-offset: 1px;
@@ -1034,6 +1044,9 @@ html.js .reveal.reveal-in {
 @media (forced-colors: active) {
     .legend-color,
     .resource-link,
+    .on-this-page a,
+    .callout,
+    .info-table,
     .panel,
     .season-btn.active,
     .trend-status,
@@ -1222,4 +1235,163 @@ html.js .reveal.reveal-in {
     font-size: clamp(1.05rem, 2vw, 1.2rem);
     font-weight: 700;
     line-height: 1.35;
+}
+
+/* COVID-19 information page */
+.source-note {
+    max-width: 42rem;
+    margin: 0.85rem auto 0;
+    text-align: center;
+    color: var(--ink-muted);
+    font-size: 0.95rem;
+}
+
+.covid-page a {
+    color: var(--oc-navy);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.covid-page a:hover {
+    text-decoration-thickness: 2px;
+}
+
+.on-this-page {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    max-width: 46rem;
+    margin: 1.15rem auto 0;
+}
+
+.on-this-page a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0.35rem 0.8rem;
+    border: 1px solid var(--border-strong);
+    border-radius: 4px;
+    background: var(--surface);
+    text-decoration: none;
+    font-size: 0.92rem;
+}
+
+.on-this-page a:hover {
+    background: #f7f9fc;
+    border-color: var(--oc-navy);
+    text-decoration: none;
+}
+
+.info-section {
+    margin-top: 2.75rem;
+    scroll-margin-top: 1rem;
+}
+
+.info-panel > :last-child {
+    margin-bottom: 0;
+}
+
+.info-subhead {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-top: 1.2rem;
+    margin-bottom: 0.45rem;
+}
+
+.info-columns {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.35rem 1.5rem;
+    margin-bottom: 1rem;
+    padding-left: 1.15rem;
+}
+
+.callout {
+    border-radius: var(--radius);
+    padding: 1rem 1.15rem;
+}
+
+.callout-emergency {
+    border: 1px solid #e7b4b0;
+    border-left: 4px solid var(--level-high-text);
+    background: #fdf6f5;
+    color: var(--ink);
+}
+
+.callout-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+}
+
+.info-table-scroll {
+    overflow-x: auto;
+    margin: 1rem 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+}
+
+.info-table-scroll:focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+}
+
+.info-table {
+    width: 100%;
+    min-width: 40rem;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+    color: var(--ink);
+}
+
+.info-table caption {
+    caption-side: top;
+    padding: 0.7rem 0.85rem 0.45rem;
+    text-align: left;
+    font-weight: 650;
+    color: var(--ink);
+}
+
+.info-table th,
+.info-table td {
+    padding: 0.55rem 0.85rem;
+    border-top: 1px solid var(--border);
+    text-align: left;
+    vertical-align: top;
+}
+
+.info-table thead th {
+    background: var(--surface-muted);
+    font-weight: 650;
+}
+
+@media (max-width: 575.98px) {
+    .info-columns {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    .covid-page a {
+        color: #f0b57a;
+    }
+
+    .on-this-page a:hover {
+        background: #182436;
+        border-color: var(--oc-orange);
+        color: #f8fafc;
+    }
+
+    .callout-emergency {
+        background: #2a1818;
+        border-color: #6b3030;
+        color: var(--ink);
+    }
+
+    .info-table thead th {
+        background: #182436;
+    }
 }
