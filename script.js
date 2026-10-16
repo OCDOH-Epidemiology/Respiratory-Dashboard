@@ -135,7 +135,7 @@ let schoolChart = null;
 let vaxDonutChart = null;
 let vaxBarChart = null;
 let vaxPathogen = "covid"; // "covid" | "flu"
-let vaxPlace = "nys"; // "nys" | "orangeCounty"
+let vaxPlace = "orangeCounty"; // "nys" | "orangeCounty"
 let vaxDimension = "overall"; // "overall" | "age" | "gender"
 let vaxTransitionToken = 0;
 let vaxHasRendered = false;
@@ -161,7 +161,7 @@ const VAX_PLACE_LABELS = {
 };
 
 function vaxPlaceLabel() {
-  return VAX_PLACE_LABELS[vaxPlace] || "New York State";
+  return VAX_PLACE_LABELS[vaxPlace] || "Orange County";
 }
 
 function parseISODate(iso) {

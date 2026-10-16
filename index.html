@@ -302,11 +302,11 @@
                 <h2 id="vaccinations-heading" class="section-title mb-0">Vaccinations</h2>
                 <div class="d-flex flex-wrap gap-2">
                     <div class="season-toggle" role="group" aria-label="Select place">
-                        <button type="button" class="season-btn active" data-vax-place="nys" aria-pressed="true">
-                            New York State
-                        </button>
-                        <button type="button" class="season-btn" data-vax-place="orangeCounty" aria-pressed="false">
+                        <button type="button" class="season-btn active" data-vax-place="orangeCounty" aria-pressed="true">
                             Orange County
+                        </button>
+                        <button type="button" class="season-btn" data-vax-place="nys" aria-pressed="false">
+                            New York State
                         </button>
                     </div>
                     <div class="season-toggle" role="group" aria-label="Select vaccine">
@@ -320,7 +320,7 @@
                 </div>
             </div>
             <p id="vaxCaption" class="section-caption mb-3">
-                New York State vaccination coverage. Select Overall Coverage or Age.
+                Orange County vaccination coverage. Select Overall Coverage, Age, or Gender.
             </p>
 
             <div class="vax-dimension-toggle mb-2" role="group" aria-label="Select vaccination breakdown">
@@ -330,11 +330,11 @@
                 <button type="button" class="vax-dimension-btn" data-vax-dimension="age" aria-pressed="false">
                     Age
                 </button>
-                <button type="button" class="vax-dimension-btn" data-vax-dimension="gender" aria-pressed="false" disabled aria-disabled="true">
+                <button type="button" class="vax-dimension-btn" data-vax-dimension="gender" aria-pressed="false">
                     Gender
                 </button>
             </div>
-            <p id="vaxGenderNote" class="section-caption mb-3">
+            <p id="vaxGenderNote" class="section-caption mb-3 d-none">
                 A gender breakdown is not available for New York State.
             </p>
 
@@ -342,7 +342,7 @@
                 <div id="vaxChartStage" class="vax-chart-stage">
                     <h3 class="chart-title" id="vax-chart-title">Total up-to-date COVID-19 vaccine coverage</h3>
                     <p class="chart-caption" id="vax-chart-caption">
-                        Percent of the New York State population vaccinated.
+                        Percent of the Orange County population vaccinated.
                     </p>
 
                     <div id="vaxOverallWrap" class="vax-overall-wrap">
@@ -381,7 +381,7 @@
             </div>
 
             <p id="vaxFootnote" class="chart-note vax-footnote">
-                Coverage figures are New York State vaccination rates from the NYS COVID-19 and Influenza Vaccination Data dashboards.
+                Coverage figures are Orange County vaccination rates from the NYS COVID-19 and Influenza Vaccination Data dashboards.
             </p>
         </section>
 
