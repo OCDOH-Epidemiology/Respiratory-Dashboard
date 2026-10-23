@@ -1,7 +1,7 @@
 {
   "meta": {
-    "lastUpdated": "2026-10-10",
-    "lastUpdatedDisplay": "October 10, 2026",
+    "lastUpdated": "2026-10-17",
+    "lastUpdatedDisplay": "October 17, 2026",
     "seasonStart": "2026-10-03",
     "seasonEnd": "2027-05-07",
     "seasonLabel": "2026\u201327",
@@ -2117,7 +2117,7 @@
       "weekEnding": "2026-08-29",
       "edCovid": 0.26,
       "edFlu": 0.34,
-      "edRsv": 0.16,
+      "edRsv": 0.15,
       "schoolAbsenteeism": null,
       "hospitalizations": null,
       "vaxCovid": null,
@@ -2137,7 +2137,7 @@
     },
     {
       "weekEnding": "2026-09-12",
-      "edCovid": 0.57,
+      "edCovid": 0.56,
       "edFlu": 0.39,
       "edRsv": 0.02,
       "schoolAbsenteeism": null,
@@ -2177,84 +2177,95 @@
       "hospitalizations": null,
       "vaxCovid": null,
       "vaxFlu": null,
-      "edAcuteRespiratory": 536
+      "edAcuteRespiratory": 510
     },
     {
       "weekEnding": "2026-10-10",
-      "edCovid": 0.05,
-      "edFlu": 0.88,
+      "edCovid": 0.48,
+      "edFlu": 0.86,
       "edRsv": 0.08,
       "schoolAbsenteeism": null,
       "hospitalizations": null,
       "vaxCovid": null,
       "vaxFlu": null,
-      "edAcuteRespiratory": 461
+      "edAcuteRespiratory": 465
+    },
+    {
+      "weekEnding": "2026-10-17",
+      "edCovid": 0.02,
+      "edFlu": 0.8,
+      "edRsv": 0.12,
+      "schoolAbsenteeism": null,
+      "hospitalizations": null,
+      "vaxCovid": null,
+      "vaxFlu": null,
+      "edAcuteRespiratory": 538
     }
   ],
   "vaccinations": {
-    "asOf": "2026-10-14",
-    "asOfDisplay": "October 14, 2026",
+    "asOf": "2026-10-21",
+    "asOfDisplay": "October 21, 2026",
     "sourceUrl": "https://coronavirus.health.ny.gov/covid-19-and-influenza-vaccination-data",
     "demographicsUrl": "https://coronavirus.health.ny.gov/covid-19-and-influenza-vaccination-demographics",
     "nys": {
       "covid": {
-        "overallPercent": 3.1,
-        "doses": 350244,
+        "overallPercent": 3.8,
+        "doses": 437594,
         "byAge": {
-          "Ages 0\u201318": 0.5,
-          "Ages 19+": 3.8
+          "Ages 0\u201318": 0.6,
+          "Ages 19+": 4.7
         },
         "byGender": null
       },
       "flu": {
-        "overallPercent": 10.5,
-        "doses": 1204029,
+        "overallPercent": 13.6,
+        "doses": 1553778,
         "byAge": {
-          "Ages 0\u201318": 8.2,
-          "Ages 19+": 11.2
+          "Ages 0\u201318": 11.0,
+          "Ages 19+": 14.3
         },
         "byGender": null
       }
     },
     "orangeCounty": {
       "covid": {
-        "overallPercent": 1.7,
-        "doses": 7294,
+        "overallPercent": 2.1,
+        "doses": 8957,
         "byAge": {
-          "0-4": 0.0,
-          "5\u201311": 0.1,
-          "12\u201318": 0.3,
-          "19\u201325": 0.5,
-          "26\u201334": 0.7,
-          "35\u201344": 0.9,
-          "45\u201354": 1.0,
-          "55\u201364": 2.3,
-          "65\u201374": 5.9,
-          "75+": 7.9
+          "0-4": 0.1,
+          "5\u201311": 0.2,
+          "12\u201318": 0.4,
+          "19\u201325": 0.6,
+          "26\u201334": 0.9,
+          "35\u201344": 1.1,
+          "45\u201354": 1.2,
+          "55\u201364": 2.8,
+          "65\u201374": 7.1,
+          "75+": 9.8
         },
         "byGender": {
-          "Female": 1.9,
-          "Male": 1.6
+          "Female": 2.3,
+          "Male": 2.0
         }
       },
       "flu": {
-        "overallPercent": 6.9,
-        "doses": 28867,
+        "overallPercent": 8.7,
+        "doses": 36392,
         "byAge": {
-          "0-4": 5.0,
-          "5\u201311": 5.0,
-          "12\u201318": 4.1,
-          "19\u201325": 3.6,
-          "26\u201334": 3.4,
-          "35\u201344": 3.7,
-          "45\u201354": 5.3,
-          "55\u201364": 9.9,
-          "65\u201374": 14.1,
-          "75+": 18.3
+          "0-4": 6.5,
+          "5\u201311": 6.6,
+          "12\u201318": 6.3,
+          "19\u201325": 4.6,
+          "26\u201334": 4.4,
+          "35\u201344": 4.8,
+          "45\u201354": 6.6,
+          "55\u201364": 12.4,
+          "65\u201374": 17.5,
+          "75+": 23.3
         },
         "byGender": {
-          "Female": 7.8,
-          "Male": 6.0
+          "Female": 9.8,
+          "Male": 7.6
         }
       }
     }
