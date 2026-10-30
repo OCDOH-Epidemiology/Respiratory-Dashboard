@@ -63,7 +63,15 @@ All dial, trend, and chart values come from [`data/weekly.json`](data/weekly.jso
       "vaxCovid": null,
       "vaxFlu": null
     }
-  ]
+  ],
+  "hospitalizations": {
+    "current": [
+      { "week": 1, "dateUpdated": "YYYY-MM-DD", "flu": 5, "rsv": 0, "covid": 5 }
+    ],
+    "past": [
+      { "weekEnding": "YYYY-MM-DD", "flu": 3, "rsv": 0, "covid": 3 }
+    ]
+  }
 }
 ```
 
@@ -75,7 +83,9 @@ All dial, trend, and chart values come from [`data/weekly.json`](data/weekly.jso
 | `weeks[].edCovid` / `edFlu` / `edRsv` | % of all ED visits for that pathogen (nullable) |
 | `weeks[].edAcuteRespiratory` | Weekly acute respiratory ED visit count (nullable) |
 | `weeks[].schoolAbsenteeism` | % of students absent among open schools (nullable; summer/closure weeks may be blank) |
-| `weeks[].hospitalizations` | Reserved for Phase 2 |
+| `weeks[].hospitalizations` | Unused. Charts use the top-level `hospitalizations` object |
+| `hospitalizations.current` | Current OC respiratory weeks: week number, date updated, and flu / RSV / COVID-19 counts |
+| `hospitalizations.past` | Prior-season hospital counts by week ending |
 | `weeks[].vaxCovid` / `vaxFlu` | Reserved for weekly series (unused; UI uses top-level `vaccinations`) |
 | `vaccinations` | NYS coverage snapshot from the ESSS `Vaccinations` sheet |
 
@@ -86,14 +96,15 @@ Null series show an empty state (“Data coming soon”) instead of a broken cha
 Emergency department COVID, flu, and RSV percentages, plus acute respiratory visit counts, come from [`Respiratory Dashboard ESSS (Updated).xlsx`](Respiratory%20Dashboard%20ESSS%20(Updated).xlsx).
 
 1. Add or edit weekly rows on the `All Visits`, `Acute Respiratory`, `COVID`, `Influenza`, and `RSV` sheets (Week label + disposition columns; charts use the `Total` column).
-2. Update the `Vaccinations` sheet snapshot (overall NYS %, age, and gender blocks for COVID and flu) when new coverage figures are available.
-3. Rebuild `data/weekly.json`:
+2. Add hospitalization rows on the `Hospitalizations` sheet. Current season is columns I–M (respiratory week, date updated, influenza, RSV, COVID-19). Past data is columns A–D (date, influenza, RSV, COVID-19).
+3. Update the `Vaccinations` sheet snapshot (overall NYS %, age, and gender blocks for COVID and flu) when new coverage figures are available.
+4. Rebuild `data/weekly.json`:
 
 ```bash
 python3 scripts/build_ed_from_esss.py
 ```
 
-Percentages are `(pathogen Total ÷ All Visits Total) × 100`. Acute respiratory uses the `Acute Respiratory` sheet `Total` as a visit count. Weeks with `All Visits` total of 0 are stored as null (not plotted). School absenteeism and activity level fields are left unchanged. The same command also refreshes the top-level `vaccinations` object from the `Vaccinations` sheet.
+Percentages are `(pathogen Total ÷ All Visits Total) × 100`. Acute respiratory uses the `Acute Respiratory` sheet `Total` as a visit count. Weeks with `All Visits` total of 0 are stored as null (not plotted). School absenteeism and activity level fields are left unchanged. The same command also refreshes the top-level `vaccinations` object from the `Vaccinations` sheet and `hospitalizations` from the `Hospitalizations` sheet.
 
 Optional flags: `--xlsx path/to/file.xlsx` and `--json path/to/weekly.json`.
 
@@ -105,13 +116,9 @@ Rebuild school rates from the School Masterlist (separate from ESSS):
 python3 scripts/build_school_masterlist.py
 ```
 
-## Phase 2 hooks
+## Still out of scope
 
-UI placeholder already exists on the page for:
-
-1. **Hospitalizations** — wire a Chart.js series from `weeks[].hospitalizations` (or a nested structure if you need age/facility breakdowns). Add season/year scaling similar to the existing season toggle.
-
-Vaccination coverage is live from `vaccinations` (Overall / Age / Gender, COVID and flu). Out of scope until feeds exist: predicted hospitalizations, wastewater maps, and separate pathogen dials.
+Vaccination coverage is live from `vaccinations` (Overall / Age / Gender, COVID and flu). Hospitalization counts are live from `hospitalizations` (current respiratory weeks and past data) on the home page. Out of scope until feeds exist: predicted hospitalizations, wastewater maps, separate pathogen dials, and hospitalization charts on the individual illness pages.
 
 ## Stack
 

@@ -10,11 +10,11 @@
 //   trend:  1 = Decreasing,  2 = Staying the Same,  3 = Increasing
 // These override values from data/weekly.json.
 // =============================================================================
-const LAST_UPDATED = "October 23, 2026";
+const LAST_UPDATED = "October 30, 2026";
 
 const ACTIVITY = {
   level: 1,
-  trend: 2,
+  trend: 3,
 };
 
 // Set to false to hide the School absenteeism section.
@@ -132,6 +132,14 @@ let gaugeViewObserver = null;
 let edChart = null;
 let acuteEdChart = null;
 let schoolChart = null;
+let hospChart = null;
+let hospRangeMode = "season"; // "season" | "all"
+let hospBrushReady = false;
+const HOSP_SERIES = [
+  { key: "covid", label: "COVID-19" },
+  { key: "flu", label: "Flu" },
+  { key: "rsv", label: "RSV" },
+];
 let vaxDonutChart = null;
 let vaxBarChart = null;
 let vaxPathogen = "covid"; // "covid" | "flu"
@@ -147,6 +155,7 @@ const chartBrushes = {
   ed: { start: 0, end: 0 },
   acuteEd: { start: 0, end: 0 },
   school: { start: 0, end: 0 },
+  hosp: { start: 0, end: 0 },
 };
 const BRUSH_KEYS = Object.keys(chartBrushes);
 
@@ -258,6 +267,11 @@ function getDomainWeeks() {
   return filterWeeks(dashboardData.weeks, dashboardData.meta, rangeMode);
 }
 
+function brushDomain(brushKey) {
+  if (brushKey === "hosp") return hospDomainRows();
+  return getDomainWeeks();
+}
+
 function clampBrushRange(brush, maxIndex) {
   if (maxIndex < 0) {
     brush.start = 0;
@@ -276,6 +290,7 @@ function clampBrushRange(brush, maxIndex) {
 function resetBrushRanges(domainLength) {
   const end = Math.max(0, domainLength - 1);
   BRUSH_KEYS.forEach((key) => {
+    if (key === "hosp") return;
     chartBrushes[key].start = 0;
     chartBrushes[key].end = end;
   });
@@ -283,7 +298,13 @@ function resetBrushRanges(domainLength) {
 
 function clampAllBrushes(domainLength) {
   const maxIndex = Math.max(0, domainLength - 1);
-  BRUSH_KEYS.forEach((key) => clampBrushRange(chartBrushes[key], maxIndex));
+  BRUSH_KEYS.forEach((key) => {
+    if (key === "hosp") {
+      clampBrushRange(chartBrushes.hosp, Math.max(0, hospDomainRows().length - 1));
+      return;
+    }
+    clampBrushRange(chartBrushes[key], maxIndex);
+  });
 }
 
 function sliceByBrush(weeks, brushKey) {
@@ -335,33 +356,37 @@ function syncBrushUI(brushKey, domainWeeks) {
     startHandle.setAttribute("aria-valuemin", "0");
     startHandle.setAttribute("aria-valuemax", String(n - 1));
     startHandle.setAttribute("aria-valuenow", String(brush.start));
-    startHandle.setAttribute(
-      "aria-valuetext",
-      formatDisplayDate(domainWeeks[brush.start].weekEnding)
-    );
+    startHandle.setAttribute("aria-valuetext", brushPointText(domainWeeks[brush.start]));
   }
   if (endHandle) {
     endHandle.style.left = `${endPct}%`;
     endHandle.setAttribute("aria-valuemin", "0");
     endHandle.setAttribute("aria-valuemax", String(n - 1));
     endHandle.setAttribute("aria-valuenow", String(brush.end));
-    endHandle.setAttribute(
-      "aria-valuetext",
-      formatDisplayDate(domainWeeks[brush.end].weekEnding)
-    );
+    endHandle.setAttribute("aria-valuetext", brushPointText(domainWeeks[brush.end]));
   }
-  if (label) {
-    const startLabel = formatDisplayDate(domainWeeks[brush.start].weekEnding);
-    const endLabel = formatDisplayDate(domainWeeks[brush.end].weekEnding);
-    label.textContent =
-      brush.start === brush.end
-        ? `Week ending ${startLabel}`
-        : `${startLabel} – ${endLabel}`;
+  if (label) label.textContent = brushRangeText(domainWeeks, brush);
+}
+
+function brushPointText(week) {
+  if (!week) return "";
+  if (week.brushLabel) return week.brushLabel;
+  return formatDisplayDate(week.weekEnding);
+}
+
+function brushRangeText(weeks, brush) {
+  const start = brushPointText(weeks[brush.start]);
+  const end = brushPointText(weeks[brush.end]);
+  if (brush.start === brush.end) {
+    return weeks[brush.start].brushLabel ? start : `Week ending ${start}`;
   }
+  return `${start} – ${end}`;
 }
 
 function syncAllBrushUI(domainWeeks) {
-  BRUSH_KEYS.forEach((key) => syncBrushUI(key, domainWeeks));
+  BRUSH_KEYS.forEach((key) => {
+    syncBrushUI(key, key === "hosp" ? hospDomainRows() : domainWeeks);
+  });
 }
 
 function seriesHasValues(weeks, key) {
@@ -445,26 +470,27 @@ function updateActivityUI(activity) {
   requestGaugeSweep(activityLevel);
 }
 
+function seasonRangeCaption(meta, weeks) {
+  const label = meta?.seasonLabel ? ` (${meta.seasonLabel})` : "";
+  const start = meta?.seasonStart
+    ? formatDisplayDate(meta.seasonStart)
+    : weeks?.[0]
+      ? formatDisplayDate(weeks[0].weekEnding)
+      : null;
+  const end = meta?.seasonEnd
+    ? formatDisplayDate(meta.seasonEnd)
+    : weeks?.length
+      ? formatDisplayDate(weeks[weeks.length - 1].weekEnding)
+      : null;
+  if (!start || !end) return "No weekly data available for this range yet.";
+  return `Showing current respiratory season${label}: ${start} – ${end}.`;
+}
+
 function updateRangeCaption(meta, mode, weeks) {
   const el = document.getElementById("rangeCaption");
   if (!el) return;
   if (mode === "season") {
-    const label = meta.seasonLabel ? ` (${meta.seasonLabel})` : "";
-    const start = meta.seasonStart
-      ? formatDisplayDate(meta.seasonStart)
-      : weeks[0]
-        ? formatDisplayDate(weeks[0].weekEnding)
-        : null;
-    const end = meta.seasonEnd
-      ? formatDisplayDate(meta.seasonEnd)
-      : weeks.length
-        ? formatDisplayDate(weeks[weeks.length - 1].weekEnding)
-        : null;
-    if (!start || !end) {
-      el.textContent = "No weekly data available for this range yet.";
-      return;
-    }
-    el.textContent = `Showing current respiratory season${label}: ${start} – ${end}.`;
+    el.textContent = seasonRangeCaption(meta, weeks);
     return;
   }
   if (!weeks.length) {
@@ -497,9 +523,64 @@ function weekCountText(n) {
   return `${n} ${n === 1 ? "week" : "weeks"}`;
 }
 
+function covidChartsOnly() {
+  return document.body.classList.contains("covid-focus");
+}
+
+function edYKeys() {
+  return covidChartsOnly() ? ["edCovid"] : ["edCovid", "edFlu", "edRsv"];
+}
+
+function edLineDataset(label, colorKey, values) {
+  return {
+    label,
+    data: values,
+    borderColor: PATHOGEN_COLORS[colorKey],
+    backgroundColor: PATHOGEN_COLORS[colorKey],
+    borderDash: PATHOGEN_LINE_STYLES[colorKey].borderDash,
+    pointStyle: PATHOGEN_LINE_STYLES[colorKey].pointStyle,
+    tension: 0.25,
+    spanGaps: true,
+    pointRadius: 2.5,
+    pointHoverRadius: 6,
+  };
+}
+
+function edLineDatasets(domainWeeks) {
+  const specs = covidChartsOnly()
+    ? [["COVID-19", "covid", "edCovid"]]
+    : [
+        ["COVID-19", "covid", "edCovid"],
+        ["Flu", "flu", "edFlu"],
+        ["RSV", "rsv", "edRsv"],
+      ];
+  return specs.map(([label, colorKey, field]) =>
+    edLineDataset(
+      label,
+      colorKey,
+      domainWeeks.map((w) => w[field])
+    )
+  );
+}
+
 function renderEdSummary(weeks) {
   if (!weeks.length) {
     setText("edChartSummary", "No emergency department visit data available.");
+    return;
+  }
+
+  if (covidChartsOnly()) {
+    const latest = weeks[weeks.length - 1];
+    const peak = peakOf(weeks, "edCovid");
+    setText(
+      "edChartSummary",
+      `COVID-19 emergency department visit chart, ${weekCountText(weeks.length)}, ${rangeText(weeks)}. ` +
+        `Latest week ending ${formatDisplayDate(latest.weekEnding)}: ${formatPercent(latest.edCovid)}%.` +
+        (peak
+          ? ` Highest in this range: ${formatPercent(peak.value)}% (week ending ${formatDisplayDate(peak.weekEnding)}).`
+          : "") +
+        " All weekly values are in the data table below the chart."
+    );
     return;
   }
 
@@ -627,11 +708,17 @@ function renderTrendTable(key, weeks, visible = true) {
     return;
   }
 
-  caption.textContent = `${config.label}, ${rangeText(weeks)} (${weekCountText(weeks.length)}, newest first)`;
+  const cols =
+    key === "ed" && covidChartsOnly() ? [["edCovid", fmtTablePercent]] : config.cols;
+  const label =
+    key === "ed" && covidChartsOnly()
+      ? "COVID-19 emergency department visit percentage"
+      : config.label;
+  caption.textContent = `${label}, ${rangeText(weeks)} (${weekCountText(weeks.length)}, newest first)`;
   const rows = [];
   for (let i = weeks.length - 1; i >= 0; i -= 1) {
     const w = weeks[i];
-    const cells = config.cols
+    const cells = cols
       .map(([field, fmt]) => {
         const v = w[field];
         const has = v != null && !Number.isNaN(Number(v));
@@ -666,7 +753,7 @@ function renderVaxTable(rows, captionText) {
 // Tooltips: Escape dismisses (WCAG 1.4.13); re-enabled when the pointer leaves
 // -----------------------------------------------------------------------------
 function activeCharts() {
-  return [edChart, acuteEdChart, schoolChart, vaxBarChart].filter(Boolean);
+  return [edChart, acuteEdChart, schoolChart, hospChart, vaxBarChart].filter(Boolean);
 }
 
 function clearChartTooltip(chart) {
@@ -928,6 +1015,7 @@ const TREND_Y_STEP = {
   ed: 2,
   acuteEd: 200,
   school: 1,
+  hosp: 5,
 };
 
 function visibleSeriesMax(weeks, keys, step = 1) {
@@ -1002,10 +1090,8 @@ function buildEdChart(domainWeeks, { animate = true } = {}) {
   const canvas = document.getElementById("edChart");
   if (!canvas) return;
 
-  const hasAny =
-    seriesHasValues(domainWeeks, "edCovid") ||
-    seriesHasValues(domainWeeks, "edFlu") ||
-    seriesHasValues(domainWeeks, "edRsv");
+  const yKeys = edYKeys();
+  const hasAny = yKeys.some((key) => seriesHasValues(domainWeeks, key));
   setEmptyState("edChart", "edEmpty", !hasAny);
   setBrushVisibility("ed", hasAny);
   renderEdSummary(sliceByBrush(domainWeeks, "ed"));
@@ -1021,20 +1107,16 @@ function buildEdChart(domainWeeks, { animate = true } = {}) {
 
   const { brush, visible } = brushWindow(domainWeeks, "ed");
   const labels = domainWeeks.map((w) => formatDisplayDate(w.weekEnding));
-  const covid = domainWeeks.map((w) => w.edCovid);
-  const flu = domainWeeks.map((w) => w.edFlu);
-  const rsv = domainWeeks.map((w) => w.edRsv);
-  const yMax = visibleSeriesMax(visible, ["edCovid", "edFlu", "edRsv"], TREND_Y_STEP.ed);
+  const datasets = edLineDatasets(domainWeeks);
+  const yMax = visibleSeriesMax(visible, yKeys, TREND_Y_STEP.ed);
 
   if (edChart) {
     edChart.data.labels = labels;
-    edChart.data.datasets[0].data = covid;
-    edChart.data.datasets[1].data = flu;
-    edChart.data.datasets[2].data = rsv;
-    edChart.options.plugins.tooltip.callbacks.title = weekTooltipTitle(domainWeeks);
-    applyTrendBrushWindow(edChart, "ed", domainWeeks, ["edCovid", "edFlu", "edRsv"], {
-      animate,
+    datasets.forEach((ds, i) => {
+      if (edChart.data.datasets[i]) edChart.data.datasets[i].data = ds.data;
     });
+    edChart.options.plugins.tooltip.callbacks.title = weekTooltipTitle(domainWeeks);
+    applyTrendBrushWindow(edChart, "ed", domainWeeks, yKeys, { animate });
     return;
   }
 
@@ -1042,44 +1124,7 @@ function buildEdChart(domainWeeks, { animate = true } = {}) {
     type: "line",
     data: {
       labels,
-      datasets: [
-        {
-          label: "COVID-19",
-          data: covid,
-          borderColor: PATHOGEN_COLORS.covid,
-          backgroundColor: PATHOGEN_COLORS.covid,
-          borderDash: PATHOGEN_LINE_STYLES.covid.borderDash,
-          pointStyle: PATHOGEN_LINE_STYLES.covid.pointStyle,
-          tension: 0.25,
-          spanGaps: true,
-          pointRadius: 2.5,
-          pointHoverRadius: 6,
-        },
-        {
-          label: "Flu",
-          data: flu,
-          borderColor: PATHOGEN_COLORS.flu,
-          backgroundColor: PATHOGEN_COLORS.flu,
-          borderDash: PATHOGEN_LINE_STYLES.flu.borderDash,
-          pointStyle: PATHOGEN_LINE_STYLES.flu.pointStyle,
-          tension: 0.25,
-          spanGaps: true,
-          pointRadius: 2.5,
-          pointHoverRadius: 6,
-        },
-        {
-          label: "RSV",
-          data: rsv,
-          borderColor: PATHOGEN_COLORS.rsv,
-          backgroundColor: PATHOGEN_COLORS.rsv,
-          borderDash: PATHOGEN_LINE_STYLES.rsv.borderDash,
-          pointStyle: PATHOGEN_LINE_STYLES.rsv.pointStyle,
-          tension: 0.25,
-          spanGaps: true,
-          pointRadius: 2.5,
-          pointHoverRadius: 6,
-        },
-      ],
+      datasets,
     },
     options: {
       responsive: true,
@@ -1087,7 +1132,11 @@ function buildEdChart(domainWeeks, { animate = true } = {}) {
       interaction: { mode: "index", intersect: false },
       animation: trendBrushMotion(animate),
       plugins: {
-        legend: { position: "bottom", labels: { usePointStyle: true, boxHeight: 8, padding: 14 } },
+        legend: {
+          display: datasets.length > 1,
+          position: "bottom",
+          labels: { usePointStyle: true, boxHeight: 8, padding: 14 },
+        },
         tooltip: {
           usePointStyle: true,
           callbacks: {
@@ -1329,16 +1378,26 @@ const TREND_BRUSH_YKEYS = {
   ed: ["edCovid", "edFlu", "edRsv"],
   acuteEd: ["edAcuteRespiratory"],
   school: ["schoolAbsenteeism"],
+  hosp: ["covid", "flu", "rsv"],
 };
 
 function chartForBrush(brushKey) {
   if (brushKey === "ed") return edChart;
   if (brushKey === "acuteEd") return acuteEdChart;
   if (brushKey === "school") return schoolChart;
+  if (brushKey === "hosp") return hospChart;
   return null;
 }
 
 function refreshOneTrendChart(brushKey, domainWeeks, { animate = true } = {}) {
+  if (brushKey === "hosp") {
+    const visible = sliceByBrush(domainWeeks, "hosp");
+    renderHospSummary(visible);
+    renderHospTable(visible, hospHasValues(domainWeeks));
+    applyTrendBrushWindow(hospChart, "hosp", domainWeeks, TREND_BRUSH_YKEYS.hosp, { animate });
+    syncBrushUI("hosp", domainWeeks);
+    return;
+  }
   const weeks = sliceByBrush(domainWeeks, brushKey);
   if (brushKey === "ed") renderEdSummary(weeks);
   else if (brushKey === "acuteEd") renderAcuteEdSummary(weeks);
@@ -1355,6 +1414,235 @@ function refreshOneTrendChart(brushKey, domainWeeks, { animate = true } = {}) {
   syncBrushUI(brushKey, domainWeeks);
 }
 
+function mapHospCurrent(row) {
+  const dateLabel = formatDisplayDate(row.dateUpdated);
+  return {
+    brushLabel: dateLabel,
+    axisLabel: dateLabel,
+    tooltip: `Date updated ${dateLabel}`,
+    dateLabel,
+    covid: row.covid,
+    flu: row.flu,
+    rsv: row.rsv,
+  };
+}
+
+function mapHospPast(row) {
+  const dateLabel = formatDisplayDate(row.weekEnding);
+  return {
+    brushLabel: dateLabel,
+    axisLabel: dateLabel,
+    tooltip: `Week ending ${dateLabel}`,
+    dateLabel,
+    covid: row.covid,
+    flu: row.flu,
+    rsv: row.rsv,
+  };
+}
+
+function hospDomainRows() {
+  const block = dashboardData?.hospitalizations;
+  const current = Array.isArray(block?.current) ? block.current.map(mapHospCurrent) : [];
+  if (hospRangeMode === "season") return current;
+  const past = Array.isArray(block?.past) ? block.past.map(mapHospPast) : [];
+  // shortcut: category axis joins May 2026 to Oct 2026 with no summer weeks
+  return past.concat(current);
+}
+
+function prepareHospBrush(reset) {
+  const max = Math.max(0, hospDomainRows().length - 1);
+  if (reset || !hospBrushReady) {
+    chartBrushes.hosp.start = 0;
+    chartBrushes.hosp.end = max;
+    hospBrushReady = true;
+  } else {
+    clampBrushRange(chartBrushes.hosp, max);
+  }
+}
+
+function hospHasValues(rows) {
+  return rows.some((row) =>
+    HOSP_SERIES.some((spec) => row[spec.key] !== null && row[spec.key] !== undefined)
+  );
+}
+
+function hospCountText(value) {
+  if (value == null || Number.isNaN(Number(value))) return "—";
+  return Math.round(Number(value)).toLocaleString();
+}
+
+function hospPeak(rows, key) {
+  let best = null;
+  for (const row of rows) {
+    const value = row[key];
+    if (value == null || Number.isNaN(Number(value))) continue;
+    if (!best || Number(value) > best.value) best = { value: Number(value), label: row.brushLabel };
+  }
+  return best;
+}
+
+function hospSpanText(rows) {
+  if (!rows.length) return "";
+  const first = rows[0].dateLabel;
+  const last = rows[rows.length - 1].dateLabel;
+  return first === last ? first : `${first} to ${last}`;
+}
+
+function updateHospRangeCaption(rows) {
+  const el = document.getElementById("hospRangeCaption");
+  if (!el) return;
+  if (hospRangeMode === "season") {
+    el.textContent = seasonRangeCaption(dashboardData?.meta || {}, []);
+    return;
+  }
+  if (!rows.length) {
+    el.textContent = "No weekly data available for this range yet.";
+    return;
+  }
+  el.textContent = `Showing all available weeks: ${rows[0].dateLabel} – ${rows[rows.length - 1].dateLabel}.`;
+}
+
+function renderHospSummary(rows) {
+  if (!hospHasValues(rows)) {
+    setText("hospChartSummary", "No hospitalization data available.");
+    return;
+  }
+  const latest = rows[rows.length - 1];
+  const latestCounts = HOSP_SERIES.map((spec) => `${spec.label} ${hospCountText(latest[spec.key])}`).join(", ");
+  const peaks = HOSP_SERIES.map((spec) => {
+    const peak = hospPeak(rows, spec.key);
+    return peak ? `${spec.label} ${hospCountText(peak.value)} (${peak.label})` : null;
+  }).filter(Boolean);
+  setText(
+    "hospChartSummary",
+    `Hospitalizations, ${weekCountText(rows.length)}, ${hospSpanText(rows)}. Latest ${latest.tooltip}: ${latestCounts}.` +
+      (peaks.length ? ` Highest in this range: ${peaks.join("; ")}.` : "") +
+      " All weekly values are in the data table below the chart."
+  );
+}
+
+function renderHospTable(rows, visible) {
+  const body = document.getElementById("hospTableBody");
+  const head = document.getElementById("hospTableHead");
+  const caption = document.getElementById("hospTableCaption");
+  if (!body || !caption) return;
+  setTableVisible("hosp", visible && rows.length > 0);
+  if (!visible || !rows.length) {
+    body.innerHTML = "";
+    return;
+  }
+  const dateHeader = hospRangeMode === "season" ? "Date updated" : "Date";
+  if (head) {
+    head.innerHTML = `<tr><th scope="col">${dateHeader}</th><th scope="col">COVID-19</th><th scope="col">Flu</th><th scope="col">RSV</th></tr>`;
+  }
+  caption.textContent = `Hospitalizations, ${hospSpanText(rows)} (${weekCountText(rows.length)}, newest first)`;
+  const html = [];
+  for (let i = rows.length - 1; i >= 0; i -= 1) {
+    const row = rows[i];
+    const lead = `<th scope="row">${escapeHtml(row.dateLabel)}</th>`;
+    const cells = HOSP_SERIES.map((spec) => {
+      const value = row[spec.key];
+      const has = value != null && !Number.isNaN(Number(value));
+      return `<td>${has ? escapeHtml(fmtTableCount(value)) : NO_DATA_CELL}</td>`;
+    }).join("");
+    html.push(`<tr>${lead}${cells}</tr>`);
+  }
+  body.innerHTML = html.join("");
+}
+
+function buildHospChart({ animate = true } = {}) {
+  const canvas = document.getElementById("hospChart");
+  if (!canvas) return;
+
+  prepareHospBrush(false);
+  const rows = hospDomainRows();
+  const hasAny = hospHasValues(rows);
+  setEmptyState("hospChart", "hospEmpty", !hasAny);
+  setBrushVisibility("hosp", hasAny);
+  updateHospRangeCaption(rows);
+  const visible = sliceByBrush(rows, "hosp");
+  renderHospSummary(visible);
+  renderHospTable(visible, hasAny);
+  syncBrushUI("hosp", rows);
+
+  if (!hasAny) {
+    if (hospChart) {
+      hospChart.destroy();
+      hospChart = null;
+    }
+    return;
+  }
+
+  const { brush } = brushWindow(rows, "hosp");
+  const labels = rows.map((row) => row.axisLabel);
+  const datasets = HOSP_SERIES.map((spec) => {
+    const style = PATHOGEN_LINE_STYLES[spec.key];
+    return {
+      label: spec.label,
+      data: rows.map((row) => row[spec.key]),
+      borderColor: PATHOGEN_COLORS[spec.key],
+      backgroundColor: PATHOGEN_COLORS[spec.key],
+      borderDash: style.borderDash,
+      pointStyle: style.pointStyle,
+      tension: 0.25,
+      spanGaps: true,
+      pointRadius: 2.5,
+      pointHoverRadius: 6,
+    };
+  });
+  const yMax = visibleSeriesMax(visible, TREND_BRUSH_YKEYS.hosp, TREND_Y_STEP.hosp);
+  const xTitle = hospRangeMode === "season" ? "Date updated" : "Date";
+  const tooltipTitle = (items) => rows[items[0]?.dataIndex]?.tooltip || "";
+  const tooltipLabel = (ctx) => {
+    const value = ctx.parsed.y;
+    if (value == null) return `${ctx.dataset.label}: —`;
+    return `${ctx.dataset.label}: ${Math.round(value).toLocaleString()}`;
+  };
+
+  if (hospChart) {
+    hospChart.data.labels = labels;
+    datasets.forEach((dataset, index) => {
+      hospChart.data.datasets[index].data = dataset.data;
+    });
+    hospChart.options.plugins.tooltip.callbacks.title = tooltipTitle;
+    hospChart.options.scales.x.title.text = xTitle;
+    applyTrendBrushWindow(hospChart, "hosp", rows, TREND_BRUSH_YKEYS.hosp, { animate });
+    return;
+  }
+
+  hospChart = new Chart(canvas, {
+    type: "line",
+    data: { labels, datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: "index", intersect: false },
+      animation: trendBrushMotion(animate),
+      plugins: {
+        legend: { position: "bottom", labels: { usePointStyle: true, boxHeight: 8, padding: 14 } },
+        tooltip: { usePointStyle: true, callbacks: { title: tooltipTitle, label: tooltipLabel } },
+      },
+      scales: {
+        x: {
+          min: brush.start,
+          max: brush.end,
+          offset: true,
+          ticks: { maxRotation: 45, autoSkip: true, maxTicksLimit: xTickLimit(visible.length) },
+          title: { display: true, text: xTitle },
+        },
+        y: {
+          beginAtZero: true,
+          ...(yMax != null ? { max: yMax } : {}),
+          title: { display: true, text: "Hospitalizations" },
+          ticks: { precision: 0 },
+        },
+      },
+    },
+  });
+  applySparseXLayout(hospChart, visible.length);
+  if (visible.length <= 1) hospChart.update("none");
+}
+
 function refreshCharts({ resetBrushes = false, animate = true } = {}) {
   if (!dashboardData) return;
   const domainWeeks = getDomainWeeks();
@@ -1365,6 +1653,7 @@ function refreshCharts({ resetBrushes = false, animate = true } = {}) {
   syncAllBrushUI(domainWeeks);
   buildEdChart(domainWeeks, { animate });
   buildAcuteEdChart(domainWeeks, { animate });
+  buildHospChart({ animate });
   if (SHOW_SCHOOL_CHART) {
     buildSchoolChart(domainWeeks, { animate });
   } else if (schoolChart) {
@@ -1798,6 +2087,25 @@ async function refreshVaccinations(options = {}) {
   }
 }
 
+function bindHospToggle() {
+  const buttons = document.querySelectorAll("[data-hosp-range]");
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const next = btn.getAttribute("data-hosp-range");
+      if (!next || next === hospRangeMode) return;
+      hospRangeMode = next;
+      buttons.forEach((b) => {
+        const active = b === btn;
+        b.classList.toggle("active", active);
+        b.setAttribute("aria-pressed", active ? "true" : "false");
+      });
+      prepareHospBrush(true);
+      buildHospChart({ animate: true });
+      announce(document.getElementById("hospRangeCaption")?.textContent || "");
+    });
+  });
+}
+
 function bindSeasonToggle() {
   const toggle = document.querySelector(
     '.charts-section .season-toggle[aria-label="Select time range"]'
@@ -1833,7 +2141,7 @@ function bindChartBrushes() {
     if (!rail || !startHandle || !endHandle) return;
 
     const indexFromClientX = (clientX) => {
-      const weeks = getDomainWeeks();
+      const weeks = brushDomain(brushKey);
       const n = weeks.length;
       if (n <= 1) return 0;
       const rect = rail.getBoundingClientRect();
@@ -1848,7 +2156,7 @@ function bindChartBrushes() {
     const flushBrushChange = () => {
       brushRaf = 0;
       if (!dashboardData) return;
-      refreshOneTrendChart(brushKey, getDomainWeeks(), { animate: pendingAnimate });
+      refreshOneTrendChart(brushKey, brushDomain(brushKey), { animate: pendingAnimate });
     };
 
     const applyBrushChange = ({ animate = true, immediate = false } = {}) => {
@@ -1867,7 +2175,7 @@ function bindChartBrushes() {
 
     const beginDrag = (mode, pointerId, targetEl, clientX) => {
       const brush = chartBrushes[brushKey];
-      const weeks = getDomainWeeks();
+      const weeks = brushDomain(brushKey);
       if (weeks.length < 1) return;
 
       const dragState = {
@@ -1957,7 +2265,7 @@ function bindChartBrushes() {
 
     const onKey = (which) => (ev) => {
       const brush = chartBrushes[brushKey];
-      const weeks = getDomainWeeks();
+      const weeks = brushDomain(brushKey);
       if (weeks.length < 1) return;
       const max = weeks.length - 1;
       let delta = 0;
@@ -2053,10 +2361,11 @@ function rebuildChartsForTheme() {
   }
   initGauge();
   if (gaugeChart) gaugeChart.update("none");
-  [edChart, acuteEdChart, schoolChart].forEach((c) => c && c.destroy());
+  [edChart, acuteEdChart, schoolChart, hospChart].forEach((c) => c && c.destroy());
   edChart = null;
   acuteEdChart = null;
   schoolChart = null;
+  hospChart = null;
   destroyVaxCharts();
   if (dashboardData) refreshCharts({ animate: false });
 }
@@ -2125,6 +2434,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     colorSchemeQuery.addListener(rebuildChartsForTheme);
   }
   bindSeasonToggle();
+  bindHospToggle();
   bindChartBrushes();
   bindVaxToggles();
   initRevealAndBackToTop();
@@ -2142,10 +2452,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     setEmptyState("edChart", "edEmpty", true);
     setEmptyState("acuteEdChart", "acuteEdEmpty", true);
     setEmptyState("schoolChart", "schoolEmpty", true);
+    setEmptyState("hospChart", "hospEmpty", true);
+    setBrushVisibility("hosp", false);
     setBrushVisibility("ed", false);
     setBrushVisibility("acuteEd", false);
     setBrushVisibility("school", false);
-    ["ed", "acuteEd", "school"].forEach((key) => setTableVisible(key, false));
+    ["ed", "acuteEd", "school", "hosp"].forEach((key) => setTableVisible(key, false));
     setVaxEmpty(true);
   }
 });

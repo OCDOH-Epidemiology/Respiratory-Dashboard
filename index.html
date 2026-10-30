@@ -248,6 +248,64 @@
             </div>
         </section>
 
+        <section class="charts-section reveal mt-5" aria-labelledby="hosp-heading">
+            <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-3">
+                <h2 id="hosp-heading" class="section-title mb-0">Hospitalizations</h2>
+                <div class="season-toggle" role="group" aria-label="Select hospitalization time range">
+                    <button type="button" class="season-btn active" data-hosp-range="season" aria-pressed="true">
+                        Current season
+                    </button>
+                    <button type="button" class="season-btn" data-hosp-range="all" aria-pressed="false">
+                        All available data
+                    </button>
+                </div>
+            </div>
+            <h3 id="hospRangeCaption" class="range-heading mb-3">Showing current respiratory season (2026–27): October 3, 2026 – May 7, 2027.</h3>
+
+            <div class="panel chart-panel mb-4">
+                <h3 class="chart-title" id="hosp-chart-title">Hospitalizations</h3>
+                <p class="chart-caption" id="hosp-chart-caption">
+                    Weekly hospital counts for COVID-19, flu, and RSV.
+                    Point to a week on the chart for the date and counts, or open the data table below the chart.
+                </p>
+                <div class="chart-canvas-wrap" role="img" aria-labelledby="hosp-chart-title" aria-describedby="hosp-chart-caption hospChartSummary hospBrushLabel">
+                    <canvas id="hospChart" aria-hidden="true" tabindex="-1"></canvas>
+                    <p id="hospEmpty" class="chart-empty d-none">Hospitalization data coming soon.</p>
+                </div>
+                <div class="chart-brush d-none" id="hospBrush" data-brush="hosp">
+                    <p class="chart-brush-caption">
+                        <span class="visually-hidden">Selected weeks: </span>
+                        <span id="hospBrushLabel" data-brush-label>—</span>
+                    </p>
+                    <div class="chart-brush-control" role="group" aria-label="Filter hospitalizations chart by week">
+                        <div class="chart-brush-rail">
+                            <div class="chart-brush-selection" data-brush-selection></div>
+                            <div class="chart-brush-handle" data-brush-handle="start" role="slider" tabindex="0" aria-label="Start week" aria-orientation="horizontal" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0"></div>
+                            <div class="chart-brush-handle" data-brush-handle="end" role="slider" tabindex="0" aria-label="End week" aria-orientation="horizontal" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0"></div>
+                        </div>
+                    </div>
+                </div>
+                <p id="hospChartSummary" class="visually-hidden"></p>
+                <details class="data-table-disclosure d-none" id="hospTableWrap" data-table-for="hosp">
+                    <summary aria-label="Show or hide data table: Hospitalizations"><span class="dt-show">Show data table</span><span class="dt-hide">Hide data table</span></summary>
+                    <div class="data-table-scroll" tabindex="0" role="region" aria-labelledby="hospTableCaption">
+                        <table class="data-table">
+                            <caption id="hospTableCaption">Hospitalizations</caption>
+                            <thead id="hospTableHead">
+                                <tr>
+                                    <th scope="col">Date updated</th>
+                                    <th scope="col">COVID-19</th>
+                                    <th scope="col">Flu</th>
+                                    <th scope="col">RSV</th>
+                                </tr>
+                            </thead>
+                            <tbody id="hospTableBody"></tbody>
+                        </table>
+                    </div>
+                </details>
+            </div>
+        </section>
+
         <section class="school-section reveal mt-5" id="schoolChartSection" data-school-chart hidden aria-labelledby="school-heading">
             <h2 id="school-heading" class="section-title mb-3">School absenteeism</h2>
             <div class="panel chart-panel mb-4" id="schoolChartPanel">
@@ -400,7 +458,7 @@
                         <div class="accordion-body">
                             <p>
                                 The activity dial is a countywide summary of respiratory illness intensity.
-                                Charts below show how COVID-19, flu, and RSV contribute over time and acute respiratory ED visit volume<span data-school-chart hidden>, and how school absenteeism is changing</span>.
+                                Charts below show how COVID-19, flu, and RSV contribute over time, acute respiratory ED visit volume, and hospitalization counts<span data-school-chart hidden>, and how school absenteeism is changing</span>.
                             </p>
                             <p>
                                 Levels can rise or fall week to week. Use the dial for a quick read of current conditions,
@@ -450,6 +508,7 @@
                                 <li>The current respiratory season is October 3, 2026 through May 7, 2027.</li>
                                 <li>“Current season” filters Emergency Department Visits charts to that window (from the season start onward as weekly data are added). After May 7, 2027, that completed season remains in the data file and is shown under “All available data,” which includes every week present in the file.</li>
                                 <li>Weekly points use week-ending dates. Point to a week on a chart for the week-ending date and values, or open “Show data table” under each chart for every week in the selected range. Press Escape to close a chart tooltip. Use the week-range sliders (arrow keys, Page Up/Page Down, Home, End) to narrow the weeks shown.</li>
+                                <li>Hospitalizations use their own time range. Current season is labeled with the date each week was updated. All available data adds the prior season by date. The week-range slider under the chart narrows the weeks shown.</li>
                                 <li data-school-chart hidden>School absenteeism is the countywide percent of students absent among schools that were open that week. Closed schools (holidays, snow days, and similar) are excluded. Summer weeks and full-closure weeks may be blank.</li>
                                 <li>Data are loaded from <code>data/weekly.json</code>. Stub values may appear until the weekly export is connected.</li>
                             </ul>

@@ -1,11 +1,11 @@
 {
   "meta": {
-    "lastUpdated": "2026-10-17",
-    "lastUpdatedDisplay": "October 17, 2026",
+    "lastUpdated": "2026-10-24",
+    "lastUpdatedDisplay": "October 24, 2026",
     "seasonStart": "2026-10-03",
     "seasonEnd": "2027-05-07",
     "seasonLabel": "2026\u201327",
-    "notes": "School absenteeism from School Masterlist (open schools only; closures/holidays/snow days excluded). ED COVID/flu/RSV % and acute respiratory visit counts from Respiratory Dashboard ESSS (Updated).xlsx (pathogen Total \u00f7 All Visits Total \u00d7 100; acute = Acute Respiratory Total). Vaccination coverage from the Vaccinations sheet (NYS snapshot)."
+    "notes": "School absenteeism from School Masterlist (open schools only; closures/holidays/snow days excluded). ED COVID/flu/RSV % and acute respiratory visit counts from Respiratory Dashboard ESSS (Updated).xlsx (pathogen Total \u00f7 All Visits Total \u00d7 100; acute = Acute Respiratory Total). Vaccination coverage from the Vaccinations sheet (NYS snapshot). Hospitalization counts from the Hospitalizations sheet (current OC respiratory weeks and past-season table)."
   },
   "activity": {
     "level": 1,
@@ -2166,7 +2166,7 @@
       "hospitalizations": null,
       "vaxCovid": null,
       "vaxFlu": null,
-      "edAcuteRespiratory": 447
+      "edAcuteRespiratory": 448
     },
     {
       "weekEnding": "2026-10-03",
@@ -2177,7 +2177,7 @@
       "hospitalizations": null,
       "vaxCovid": null,
       "vaxFlu": null,
-      "edAcuteRespiratory": 510
+      "edAcuteRespiratory": 513
     },
     {
       "weekEnding": "2026-10-10",
@@ -2188,86 +2188,317 @@
       "hospitalizations": null,
       "vaxCovid": null,
       "vaxFlu": null,
-      "edAcuteRespiratory": 465
+      "edAcuteRespiratory": 466
     },
     {
       "weekEnding": "2026-10-17",
-      "edCovid": 0.02,
-      "edFlu": 0.8,
+      "edCovid": 0.42,
+      "edFlu": 0.79,
       "edRsv": 0.12,
       "schoolAbsenteeism": null,
       "hospitalizations": null,
       "vaxCovid": null,
       "vaxFlu": null,
-      "edAcuteRespiratory": 538
+      "edAcuteRespiratory": 540
+    },
+    {
+      "weekEnding": "2026-10-24",
+      "edCovid": 0.03,
+      "edFlu": 0.77,
+      "edRsv": 0.1,
+      "schoolAbsenteeism": null,
+      "hospitalizations": null,
+      "vaxCovid": null,
+      "vaxFlu": null,
+      "edAcuteRespiratory": 496
     }
   ],
   "vaccinations": {
-    "asOf": "2026-10-21",
-    "asOfDisplay": "October 21, 2026",
+    "asOf": "2026-10-28",
+    "asOfDisplay": "October 28, 2026",
     "sourceUrl": "https://coronavirus.health.ny.gov/covid-19-and-influenza-vaccination-data",
     "demographicsUrl": "https://coronavirus.health.ny.gov/covid-19-and-influenza-vaccination-demographics",
     "nys": {
       "covid": {
-        "overallPercent": 3.8,
-        "doses": 437594,
+        "overallPercent": 4.5,
+        "doses": 510976,
         "byAge": {
-          "Ages 0\u201318": 0.6,
-          "Ages 19+": 4.7
+          "Ages 0\u201318": 0.8,
+          "Ages 19+": 5.5
         },
         "byGender": null
       },
       "flu": {
-        "overallPercent": 13.6,
-        "doses": 1553778,
+        "overallPercent": 16.1,
+        "doses": 1834228,
         "byAge": {
-          "Ages 0\u201318": 11.0,
-          "Ages 19+": 14.3
+          "Ages 0\u201318": 13.3,
+          "Ages 19+": 16.8
         },
         "byGender": null
       }
     },
     "orangeCounty": {
       "covid": {
-        "overallPercent": 2.1,
-        "doses": 8957,
+        "overallPercent": 2.5,
+        "doses": 10372,
         "byAge": {
           "0-4": 0.1,
           "5\u201311": 0.2,
           "12\u201318": 0.4,
-          "19\u201325": 0.6,
-          "26\u201334": 0.9,
-          "35\u201344": 1.1,
-          "45\u201354": 1.2,
-          "55\u201364": 2.8,
-          "65\u201374": 7.1,
-          "75+": 9.8
+          "19\u201325": 0.7,
+          "26\u201334": 1.0,
+          "35\u201344": 1.3,
+          "45\u201354": 1.4,
+          "55\u201364": 3.2,
+          "65\u201374": 8.1,
+          "75+": 11.4
         },
         "byGender": {
-          "Female": 2.3,
-          "Male": 2.0
+          "Female": 2.7,
+          "Male": 2.3
         }
       },
       "flu": {
-        "overallPercent": 8.7,
-        "doses": 36392,
+        "overallPercent": 10.2,
+        "doses": 42721,
         "byAge": {
-          "0-4": 6.5,
-          "5\u201311": 6.6,
-          "12\u201318": 6.3,
-          "19\u201325": 4.6,
-          "26\u201334": 4.4,
-          "35\u201344": 4.8,
-          "45\u201354": 6.6,
-          "55\u201364": 12.4,
-          "65\u201374": 17.5,
-          "75+": 23.3
+          "0-4": 8.0,
+          "5\u201311": 8.0,
+          "12\u201318": 7.4,
+          "19\u201325": 5.3,
+          "26\u201334": 5.2,
+          "35\u201344": 5.7,
+          "45\u201354": 7.7,
+          "55\u201364": 14.5,
+          "65\u201374": 20.3,
+          "75+": 26.9
         },
         "byGender": {
-          "Female": 9.8,
-          "Male": 7.6
+          "Female": 11.5,
+          "Male": 8.9
         }
       }
     }
+  },
+  "hospitalizations": {
+    "current": [
+      {
+        "week": 1,
+        "dateUpdated": "2026-10-07",
+        "flu": 5,
+        "rsv": 0,
+        "covid": 5
+      },
+      {
+        "week": 2,
+        "dateUpdated": "2026-10-14",
+        "flu": 1,
+        "rsv": 0,
+        "covid": 5
+      },
+      {
+        "week": 3,
+        "dateUpdated": "2026-10-21",
+        "flu": 2,
+        "rsv": 0,
+        "covid": 2
+      },
+      {
+        "week": 4,
+        "dateUpdated": "2026-10-28",
+        "flu": 8,
+        "rsv": 0,
+        "covid": 4
+      }
+    ],
+    "past": [
+      {
+        "weekEnding": "2025-10-04",
+        "flu": 3,
+        "rsv": 0,
+        "covid": 3
+      },
+      {
+        "weekEnding": "2025-10-11",
+        "flu": 1,
+        "rsv": 0,
+        "covid": 12
+      },
+      {
+        "weekEnding": "2025-10-18",
+        "flu": 2,
+        "rsv": 1,
+        "covid": 11
+      },
+      {
+        "weekEnding": "2025-10-25",
+        "flu": 1,
+        "rsv": 0,
+        "covid": 7
+      },
+      {
+        "weekEnding": "2025-11-01",
+        "flu": 7,
+        "rsv": 6,
+        "covid": 10
+      },
+      {
+        "weekEnding": "2025-11-08",
+        "flu": 5,
+        "rsv": 0,
+        "covid": 6
+      },
+      {
+        "weekEnding": "2025-11-15",
+        "flu": 10,
+        "rsv": 4,
+        "covid": 7
+      },
+      {
+        "weekEnding": "2025-11-22",
+        "flu": 8,
+        "rsv": 3,
+        "covid": 1
+      },
+      {
+        "weekEnding": "2025-11-29",
+        "flu": 18,
+        "rsv": 5,
+        "covid": 7
+      },
+      {
+        "weekEnding": "2025-12-06",
+        "flu": 26,
+        "rsv": 8,
+        "covid": 7
+      },
+      {
+        "weekEnding": "2025-12-13",
+        "flu": 41,
+        "rsv": 8,
+        "covid": 21
+      },
+      {
+        "weekEnding": "2025-12-20",
+        "flu": 71,
+        "rsv": 7,
+        "covid": 10
+      },
+      {
+        "weekEnding": "2025-12-27",
+        "flu": 99,
+        "rsv": 12,
+        "covid": 19
+      },
+      {
+        "weekEnding": "2026-01-03",
+        "flu": 94,
+        "rsv": 13,
+        "covid": 14
+      },
+      {
+        "weekEnding": "2026-01-10",
+        "flu": 55,
+        "rsv": 11,
+        "covid": 11
+      },
+      {
+        "weekEnding": "2026-01-17",
+        "flu": 42,
+        "rsv": 8,
+        "covid": 14
+      },
+      {
+        "weekEnding": "2026-01-24",
+        "flu": 16,
+        "rsv": 13,
+        "covid": 9
+      },
+      {
+        "weekEnding": "2026-01-31",
+        "flu": 4,
+        "rsv": 10,
+        "covid": 7
+      },
+      {
+        "weekEnding": "2026-02-07",
+        "flu": 4,
+        "rsv": 11,
+        "covid": 11
+      },
+      {
+        "weekEnding": "2026-02-14",
+        "flu": 3,
+        "rsv": 11,
+        "covid": 11
+      },
+      {
+        "weekEnding": "2026-02-21",
+        "flu": 8,
+        "rsv": 12,
+        "covid": 14
+      },
+      {
+        "weekEnding": "2026-02-28",
+        "flu": 3,
+        "rsv": 10,
+        "covid": 7
+      },
+      {
+        "weekEnding": "2026-03-07",
+        "flu": 3,
+        "rsv": 8,
+        "covid": 14
+      },
+      {
+        "weekEnding": "2026-03-14",
+        "flu": 1,
+        "rsv": 11,
+        "covid": 5
+      },
+      {
+        "weekEnding": "2026-03-21",
+        "flu": 6,
+        "rsv": 10,
+        "covid": 10
+      },
+      {
+        "weekEnding": "2026-03-28",
+        "flu": 4,
+        "rsv": 8,
+        "covid": 2
+      },
+      {
+        "weekEnding": "2026-04-04",
+        "flu": 5,
+        "rsv": 8,
+        "covid": 11
+      },
+      {
+        "weekEnding": "2026-04-11",
+        "flu": 4,
+        "rsv": 6,
+        "covid": 9
+      },
+      {
+        "weekEnding": "2026-04-18",
+        "flu": 6,
+        "rsv": 4,
+        "covid": 4
+      },
+      {
+        "weekEnding": "2026-04-25",
+        "flu": 0,
+        "rsv": 2,
+        "covid": 4
+      },
+      {
+        "weekEnding": "2026-05-02",
+        "flu": 2,
+        "rsv": 2,
+        "covid": 6
+      }
+    ]
   }
 }
