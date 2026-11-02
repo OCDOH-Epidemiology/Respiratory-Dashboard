@@ -132,12 +132,12 @@ let gaugeViewObserver = null;
 let edChart = null;
 let acuteEdChart = null;
 let schoolChart = null;
-let hospChart = null;
+const hospCharts = { covid: null, flu: null, rsv: null };
 let hospRangeMode = "season"; // "season" | "all"
 let hospBrushReady = false;
 const HOSP_SERIES = [
   { key: "covid", label: "COVID-19" },
-  { key: "flu", label: "Flu" },
+  { key: "flu", label: "Influenza" },
   { key: "rsv", label: "RSV" },
 ];
 let vaxDonutChart = null;
@@ -523,12 +523,22 @@ function weekCountText(n) {
   return `${n} ${n === 1 ? "week" : "weeks"}`;
 }
 
-function covidChartsOnly() {
-  return document.body.classList.contains("covid-focus");
+const FOCUS = {
+  covid: { field: "edCovid", label: "COVID-19" },
+  flu: { field: "edFlu", label: "Flu" },
+  rsv: { field: "edRsv", label: "RSV" },
+};
+
+function focusPathogen() {
+  if (document.body.classList.contains("flu-focus")) return "flu";
+  if (document.body.classList.contains("rsv-focus")) return "rsv";
+  if (document.body.classList.contains("covid-focus")) return "covid";
+  return null;
 }
 
 function edYKeys() {
-  return covidChartsOnly() ? ["edCovid"] : ["edCovid", "edFlu", "edRsv"];
+  const focus = focusPathogen();
+  return focus ? [FOCUS[focus].field] : ["edCovid", "edFlu", "edRsv"];
 }
 
 function edLineDataset(label, colorKey, values) {
@@ -547,8 +557,9 @@ function edLineDataset(label, colorKey, values) {
 }
 
 function edLineDatasets(domainWeeks) {
-  const specs = covidChartsOnly()
-    ? [["COVID-19", "covid", "edCovid"]]
+  const focus = focusPathogen();
+  const specs = focus
+    ? [[FOCUS[focus].label, focus, FOCUS[focus].field]]
     : [
         ["COVID-19", "covid", "edCovid"],
         ["Flu", "flu", "edFlu"],
@@ -569,13 +580,15 @@ function renderEdSummary(weeks) {
     return;
   }
 
-  if (covidChartsOnly()) {
+  const focus = focusPathogen();
+  if (focus) {
+    const spec = FOCUS[focus];
     const latest = weeks[weeks.length - 1];
-    const peak = peakOf(weeks, "edCovid");
+    const peak = peakOf(weeks, spec.field);
     setText(
       "edChartSummary",
-      `COVID-19 emergency department visit chart, ${weekCountText(weeks.length)}, ${rangeText(weeks)}. ` +
-        `Latest week ending ${formatDisplayDate(latest.weekEnding)}: ${formatPercent(latest.edCovid)}%.` +
+      `${spec.label} emergency department visit chart, ${weekCountText(weeks.length)}, ${rangeText(weeks)}. ` +
+        `Latest week ending ${formatDisplayDate(latest.weekEnding)}: ${formatPercent(latest[spec.field])}%.` +
         (peak
           ? ` Highest in this range: ${formatPercent(peak.value)}% (week ending ${formatDisplayDate(peak.weekEnding)}).`
           : "") +
@@ -666,7 +679,7 @@ const fmtTableCount = (v) => Math.round(Number(v)).toLocaleString();
 
 const TREND_TABLES = {
   ed: {
-    label: "Emergency department visit percentage",
+    label: "Weekly Emergency Department Visits",
     cols: [
       ["edCovid", fmtTablePercent],
       ["edFlu", fmtTablePercent],
@@ -674,7 +687,7 @@ const TREND_TABLES = {
     ],
   },
   acuteEd: {
-    label: "Acute respiratory emergency department visits",
+    label: "Number of Emergency Department Visits for Acute Respiratory Illness by Week",
     cols: [["edAcuteRespiratory", fmtTableCount]],
   },
   school: {
@@ -708,12 +721,9 @@ function renderTrendTable(key, weeks, visible = true) {
     return;
   }
 
-  const cols =
-    key === "ed" && covidChartsOnly() ? [["edCovid", fmtTablePercent]] : config.cols;
-  const label =
-    key === "ed" && covidChartsOnly()
-      ? "COVID-19 emergency department visit percentage"
-      : config.label;
+  const focus = key === "ed" ? focusPathogen() : null;
+  const cols = focus ? [[FOCUS[focus].field, fmtTablePercent]] : config.cols;
+  const label = focus ? "Weekly Emergency Department Visits" : config.label;
   caption.textContent = `${label}, ${rangeText(weeks)} (${weekCountText(weeks.length)}, newest first)`;
   const rows = [];
   for (let i = weeks.length - 1; i >= 0; i -= 1) {
@@ -753,7 +763,7 @@ function renderVaxTable(rows, captionText) {
 // Tooltips: Escape dismisses (WCAG 1.4.13); re-enabled when the pointer leaves
 // -----------------------------------------------------------------------------
 function activeCharts() {
-  return [edChart, acuteEdChart, schoolChart, hospChart, vaxBarChart].filter(Boolean);
+  return [edChart, acuteEdChart, schoolChart, ...hospChartList(), vaxBarChart].filter(Boolean);
 }
 
 function clearChartTooltip(chart) {
@@ -1385,8 +1395,12 @@ function chartForBrush(brushKey) {
   if (brushKey === "ed") return edChart;
   if (brushKey === "acuteEd") return acuteEdChart;
   if (brushKey === "school") return schoolChart;
-  if (brushKey === "hosp") return hospChart;
+  if (brushKey === "hosp") return hospChartList()[0] || null;
   return null;
+}
+
+function hospChartList() {
+  return HOSP_SERIES.map((spec) => hospCharts[spec.key]).filter(Boolean);
 }
 
 function refreshOneTrendChart(brushKey, domainWeeks, { animate = true } = {}) {
@@ -1394,7 +1408,9 @@ function refreshOneTrendChart(brushKey, domainWeeks, { animate = true } = {}) {
     const visible = sliceByBrush(domainWeeks, "hosp");
     renderHospSummary(visible);
     renderHospTable(visible, hospHasValues(domainWeeks));
-    applyTrendBrushWindow(hospChart, "hosp", domainWeeks, TREND_BRUSH_YKEYS.hosp, { animate });
+    for (const spec of HOSP_SERIES) {
+      applyTrendBrushWindow(hospCharts[spec.key], "hosp", domainWeeks, [spec.key], { animate });
+    }
     syncBrushUI("hosp", domainWeeks);
     return;
   }
@@ -1515,7 +1531,7 @@ function renderHospSummary(rows) {
   }).filter(Boolean);
   setText(
     "hospChartSummary",
-    `Hospitalizations, ${weekCountText(rows.length)}, ${hospSpanText(rows)}. Latest ${latest.tooltip}: ${latestCounts}.` +
+    `Weekly hospitalizations, ${weekCountText(rows.length)}, ${hospSpanText(rows)}. Latest ${latest.tooltip}: ${latestCounts}.` +
       (peaks.length ? ` Highest in this range: ${peaks.join("; ")}.` : "") +
       " All weekly values are in the data table below the chart."
   );
@@ -1533,9 +1549,10 @@ function renderHospTable(rows, visible) {
   }
   const dateHeader = hospRangeMode === "season" ? "Date updated" : "Date";
   if (head) {
-    head.innerHTML = `<tr><th scope="col">${dateHeader}</th><th scope="col">COVID-19</th><th scope="col">Flu</th><th scope="col">RSV</th></tr>`;
+    const cols = HOSP_SERIES.map((spec) => `<th scope="col">${escapeHtml(spec.label)}</th>`).join("");
+    head.innerHTML = `<tr><th scope="col">${dateHeader}</th>${cols}</tr>`;
   }
-  caption.textContent = `Hospitalizations, ${hospSpanText(rows)} (${weekCountText(rows.length)}, newest first)`;
+  caption.textContent = `Weekly hospitalizations, ${hospSpanText(rows)} (${weekCountText(rows.length)}, newest first)`;
   const html = [];
   for (let i = rows.length - 1; i >= 0; i -= 1) {
     const row = rows[i];
@@ -1550,14 +1567,16 @@ function renderHospTable(rows, visible) {
   body.innerHTML = html.join("");
 }
 
-function buildHospChart({ animate = true } = {}) {
-  const canvas = document.getElementById("hospChart");
-  if (!canvas) return;
+function destroyHospChart(key) {
+  if (!hospCharts[key]) return;
+  hospCharts[key].destroy();
+  hospCharts[key] = null;
+}
 
+function buildHospChart({ animate = true } = {}) {
   prepareHospBrush(false);
   const rows = hospDomainRows();
   const hasAny = hospHasValues(rows);
-  setEmptyState("hospChart", "hospEmpty", !hasAny);
   setBrushVisibility("hosp", hasAny);
   updateHospRangeCaption(rows);
   const visible = sliceByBrush(rows, "hosp");
@@ -1565,82 +1584,79 @@ function buildHospChart({ animate = true } = {}) {
   renderHospTable(visible, hasAny);
   syncBrushUI("hosp", rows);
 
-  if (!hasAny) {
-    if (hospChart) {
-      hospChart.destroy();
-      hospChart = null;
-    }
-    return;
-  }
-
   const { brush } = brushWindow(rows, "hosp");
   const labels = rows.map((row) => row.axisLabel);
-  const datasets = HOSP_SERIES.map((spec) => {
-    const style = PATHOGEN_LINE_STYLES[spec.key];
-    return {
-      label: spec.label,
-      data: rows.map((row) => row[spec.key]),
-      borderColor: PATHOGEN_COLORS[spec.key],
-      backgroundColor: PATHOGEN_COLORS[spec.key],
-      borderDash: style.borderDash,
-      pointStyle: style.pointStyle,
-      tension: 0.25,
-      spanGaps: true,
-      pointRadius: 2.5,
-      pointHoverRadius: 6,
-    };
-  });
-  const yMax = visibleSeriesMax(visible, TREND_BRUSH_YKEYS.hosp, TREND_Y_STEP.hosp);
   const xTitle = hospRangeMode === "season" ? "Date updated" : "Date";
   const tooltipTitle = (items) => rows[items[0]?.dataIndex]?.tooltip || "";
-  const tooltipLabel = (ctx) => {
-    const value = ctx.parsed.y;
-    if (value == null) return `${ctx.dataset.label}: —`;
-    return `${ctx.dataset.label}: ${Math.round(value).toLocaleString()}`;
-  };
 
-  if (hospChart) {
-    hospChart.data.labels = labels;
-    datasets.forEach((dataset, index) => {
-      hospChart.data.datasets[index].data = dataset.data;
+  for (const spec of HOSP_SERIES) {
+    const canvasId = `hospChart-${spec.key}`;
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) continue;
+    const has = rows.some((row) => row[spec.key] != null && !Number.isNaN(Number(row[spec.key])));
+    setEmptyState(canvasId, `hospEmpty-${spec.key}`, !has);
+    if (!has) {
+      destroyHospChart(spec.key);
+      continue;
+    }
+
+    const data = rows.map((row) => row[spec.key]);
+    const tooltipLabel = (ctx) => {
+      const value = ctx.parsed.y;
+      if (value == null) return `${spec.label}: —`;
+      return `${spec.label}: ${Math.round(value).toLocaleString()}`;
+    };
+    const existing = hospCharts[spec.key];
+    if (existing) {
+      existing.data.labels = labels;
+      existing.data.datasets[0].data = data;
+      existing.options.plugins.tooltip.callbacks.title = tooltipTitle;
+      existing.options.scales.x.title.text = xTitle;
+      applyTrendBrushWindow(existing, "hosp", rows, [spec.key], { animate });
+      continue;
+    }
+
+    const yMax = visibleSeriesMax(visible, [spec.key], TREND_Y_STEP.hosp);
+    const chart = new Chart(canvas, {
+      type: "bar",
+      data: {
+        labels,
+        datasets: [{
+          label: spec.label,
+          data,
+          backgroundColor: PATHOGEN_COLORS[spec.key],
+          maxBarThickness: 48,
+        }],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: trendBrushMotion(animate),
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { title: tooltipTitle, label: tooltipLabel } },
+        },
+        scales: {
+          x: {
+            min: brush.start,
+            max: brush.end,
+            offset: true,
+            ticks: { maxRotation: 45, autoSkip: true, maxTicksLimit: xTickLimit(visible.length) },
+            title: { display: true, text: xTitle },
+          },
+          y: {
+            beginAtZero: true,
+            ...(yMax != null ? { max: yMax } : {}),
+            title: { display: true, text: "Hospitalizations" },
+            ticks: { precision: 0 },
+          },
+        },
+      },
     });
-    hospChart.options.plugins.tooltip.callbacks.title = tooltipTitle;
-    hospChart.options.scales.x.title.text = xTitle;
-    applyTrendBrushWindow(hospChart, "hosp", rows, TREND_BRUSH_YKEYS.hosp, { animate });
-    return;
+    hospCharts[spec.key] = chart;
+    applySparseXLayout(chart, visible.length);
+    if (visible.length <= 1) chart.update("none");
   }
-
-  hospChart = new Chart(canvas, {
-    type: "line",
-    data: { labels, datasets },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      interaction: { mode: "index", intersect: false },
-      animation: trendBrushMotion(animate),
-      plugins: {
-        legend: { position: "bottom", labels: { usePointStyle: true, boxHeight: 8, padding: 14 } },
-        tooltip: { usePointStyle: true, callbacks: { title: tooltipTitle, label: tooltipLabel } },
-      },
-      scales: {
-        x: {
-          min: brush.start,
-          max: brush.end,
-          offset: true,
-          ticks: { maxRotation: 45, autoSkip: true, maxTicksLimit: xTickLimit(visible.length) },
-          title: { display: true, text: xTitle },
-        },
-        y: {
-          beginAtZero: true,
-          ...(yMax != null ? { max: yMax } : {}),
-          title: { display: true, text: "Hospitalizations" },
-          ticks: { precision: 0 },
-        },
-      },
-    },
-  });
-  applySparseXLayout(hospChart, visible.length);
-  if (visible.length <= 1) hospChart.update("none");
 }
 
 function refreshCharts({ resetBrushes = false, animate = true } = {}) {
@@ -1728,10 +1744,10 @@ function updateVaxTitles() {
     titleEl.textContent = `Total up-to-date ${pathogenLabel} vaccine coverage`;
     captionEl.textContent = `Percent of the ${place} population vaccinated.`;
   } else if (vaxDimension === "age") {
-    titleEl.textContent = `${pathogenLabel} vaccination by age`;
+    titleEl.textContent = `${pathogenLabel} Vaccination by Age Group`;
     captionEl.textContent = `Percent vaccinated in each age group (${place}).`;
   } else {
-    titleEl.textContent = `${pathogenLabel} vaccination by gender`;
+    titleEl.textContent = `${pathogenLabel} Vaccination by Gender`;
     captionEl.textContent = `Percent vaccinated by gender (${place}).`;
   }
 }
@@ -1755,14 +1771,6 @@ function updateVaxCaptionAndFootnote() {
   }
 
   if (footnote && vax) {
-    const parts = [
-      `Coverage figures are ${vaxPlaceLabel()} vaccination rates.`,
-    ];
-    if (vax.asOfDisplay || vax.asOf) {
-      parts.push(
-        `Data as of ${vax.asOfDisplay || formatDisplayDate(vax.asOf)}.`
-      );
-    }
     const links = [];
     if (vax.sourceUrl) {
       links.push(
@@ -1774,9 +1782,11 @@ function updateVaxCaptionAndFootnote() {
         `<a href="${vax.demographicsUrl}" target="_blank" rel="noopener noreferrer">demographics<span class="visually-hidden"> (opens in a new tab)</span></a>`
       );
     }
-    footnote.innerHTML =
-      parts.join(" ") +
-      (links.length ? ` Source: ${links.join(" · ")}.` : "");
+    const asOf = vax.asOfDisplay || (vax.asOf ? formatDisplayDate(vax.asOf) : "");
+    footnote.innerHTML = [
+      links.length ? `Source: ${links.join(" · ")}.` : "",
+      asOf ? `Data as of ${asOf}.` : "",
+    ].filter(Boolean).join(" ");
   }
 }
 
@@ -2361,11 +2371,11 @@ function rebuildChartsForTheme() {
   }
   initGauge();
   if (gaugeChart) gaugeChart.update("none");
-  [edChart, acuteEdChart, schoolChart, hospChart].forEach((c) => c && c.destroy());
+  [edChart, acuteEdChart, schoolChart, ...hospChartList()].forEach((c) => c && c.destroy());
   edChart = null;
   acuteEdChart = null;
   schoolChart = null;
-  hospChart = null;
+  for (const spec of HOSP_SERIES) hospCharts[spec.key] = null;
   destroyVaxCharts();
   if (dashboardData) refreshCharts({ animate: false });
 }
@@ -2433,6 +2443,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   } else if (colorSchemeQuery.addListener) {
     colorSchemeQuery.addListener(rebuildChartsForTheme);
   }
+  if (focusPathogen() === "flu") vaxPathogen = "flu";
   bindSeasonToggle();
   bindHospToggle();
   bindChartBrushes();
@@ -2452,7 +2463,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     setEmptyState("edChart", "edEmpty", true);
     setEmptyState("acuteEdChart", "acuteEdEmpty", true);
     setEmptyState("schoolChart", "schoolEmpty", true);
-    setEmptyState("hospChart", "hospEmpty", true);
+    for (const spec of HOSP_SERIES) setEmptyState(`hospChart-${spec.key}`, `hospEmpty-${spec.key}`, true);
     setBrushVisibility("hosp", false);
     setBrushVisibility("ed", false);
     setBrushVisibility("acuteEd", false);

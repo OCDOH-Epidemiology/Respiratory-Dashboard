@@ -129,25 +129,74 @@
                 Activity reflects laboratory reports, hospital visits, school and facility reports, and related surveillance for flu, COVID-19, and RSV.
             </p>
 
-            <details class="level-guide mt-3">
+            <details class="level-guide mt-3" open>
                 <summary>What do Low, Moderate, and High mean?</summary>
                 <div class="level-guide-body">
                     <dl class="level-defs">
                         <div class="level-def level-low">
                             <dt>Low</dt>
-                            <dd>Fewer people are seeking medical care for respiratory symptoms. Stay cautious during peak season.</dd>
+                            <dd>Fewer people are seeking medical care for respiratory symptoms. Stay up to date on vaccines, wash hands, and practice good hygiene.</dd>
                         </div>
                         <div class="level-def level-moderate">
                             <dt>Moderate</dt>
-                            <dd>People are seeking care for respiratory symptoms. Stay up to date on vaccines and practice good hygiene.</dd>
+                            <dd>Stay up to date on vaccines, wash hands, and practice good hygiene.</dd>
                         </div>
                         <div class="level-def level-high">
                             <dt>High</dt>
-                            <dd>More people are seeking care. Extra precautions—masking indoors and staying home when sick—are recommended.</dd>
+                            <dd>More people are seeking care for respiratory symptoms. Extra precautions, such as masking while indoors or crowded spaces and social distancing, are recommended.</dd>
                         </div>
                     </dl>
                 </div>
             </details>
+        </section>
+
+        <section class="actions-section reveal mt-5" aria-labelledby="actions-heading">
+            <h2 id="actions-heading" class="section-title">Actions You Can Take</h2>
+            <div class="accordion" id="actionsAccordion">
+                <div class="accordion-item">
+                    <h3 class="accordion-header" id="headingActionsAny">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseActionsAny" aria-expanded="false" aria-controls="collapseActionsAny">
+                            Even when respiratory illness levels are low, it is important to keep up with these prevention strategies
+                        </button>
+                    </h3>
+                    <div id="collapseActionsAny" class="accordion-collapse collapse" aria-labelledby="headingActionsAny"
+                        data-bs-parent="#actionsAccordion">
+                        <div class="accordion-body">
+                            <ul>
+                                <li>Get vaccinated against respiratory illnesses. COVID-19 and flu vaccines are recommended
+                                    for people 6 months and older. RSV vaccine is recommended for people at high risk—talk
+                                    with your health care provider for details. Go to
+                                    <a href="https://vaccinefinder.org/" target="_blank" rel="noopener noreferrer">vaccinefinder.org<span class="visually-hidden"> (opens in a new tab)</span></a>
+                                    for a location near you.
+                                </li>
+                                <li>Wash hands often with soap and water for 20 seconds, especially after coughing or sneezing.</li>
+                                <li>Cover coughs and sneezes with a tissue or your elbow.</li>
+                                <li>Stay home if you are sick with respiratory illness. Return to normal activity when
+                                    symptoms have improved and you are fever-free for 24 hours.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h3 class="accordion-header" id="headingActionsHigh">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseActionsHigh" aria-expanded="false" aria-controls="collapseActionsHigh">
+                            When levels are high
+                        </button>
+                    </h3>
+                    <div id="collapseActionsHigh" class="accordion-collapse collapse" aria-labelledby="headingActionsHigh"
+                        data-bs-parent="#actionsAccordion">
+                        <div class="accordion-body">
+                            <ul>
+                                <li>Consider wearing a well-fitted mask when around others indoors.</li>
+                                <li>Avoid crowded areas when possible.</li>
+                                <li>Improve air quality by bringing in fresh air from outside, purifying air indoors, or gathering outdoors.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <section class="charts-section reveal mt-5" aria-labelledby="trends-heading">
@@ -165,9 +214,10 @@
             <h3 id="rangeCaption" class="range-heading mb-3">Showing current respiratory season (2026–27): October 3, 2026 – May 7, 2027.</h3>
 
             <div class="panel chart-panel mb-4">
-                <h3 class="chart-title" id="ed-chart-title">Emergency department visit percentage</h3>
+                <h3 class="chart-title" id="ed-chart-title">Weekly Emergency Department Visits</h3>
                 <p class="chart-caption" id="ed-chart-caption">
-                    Share of ED visits with COVID-19, flu, or RSV. Point to a week on the chart for the date and values, or open the data table below the chart.
+                    Percent of emergency department visits for people diagnosed with COVID-19, Influenza, RSV, or another acute respiratory illness (ARI).<br>
+                    Point to a week on the chart for the date and values, or open the data table below the chart.
                 </p>
                 <div class="chart-canvas-wrap" role="img" aria-labelledby="ed-chart-title" aria-describedby="ed-chart-caption edChartSummary edBrushLabel">
                     <canvas id="edChart" aria-hidden="true" tabindex="-1"></canvas>
@@ -188,10 +238,10 @@
                 </div>
                 <p id="edChartSummary" class="visually-hidden"></p>
                 <details class="data-table-disclosure d-none" id="edTableWrap" data-table-for="ed">
-                    <summary aria-label="Show or hide data table: Emergency department visit percentage"><span class="dt-show">Show data table</span><span class="dt-hide">Hide data table</span></summary>
+                    <summary aria-label="Show or hide data table: Weekly Emergency Department Visits"><span class="dt-show">Show data table</span><span class="dt-hide">Hide data table</span></summary>
                     <div class="data-table-scroll" tabindex="0" role="region" aria-labelledby="edTableCaption">
                         <table class="data-table">
-                            <caption id="edTableCaption">Emergency department visit percentage</caption>
+                            <caption id="edTableCaption">Weekly Emergency Department Visits</caption>
                             <thead>
                                 <tr>
                                     <th scope="col">Week ending</th>
@@ -207,9 +257,8 @@
             </div>
 
             <div class="panel chart-panel mb-4">
-                <h3 class="chart-title" id="acute-ed-chart-title">Acute respiratory emergency department visits</h3>
+                <h3 class="chart-title" id="acute-ed-chart-title">Number of Emergency Department Visits for Acute Respiratory Illness by Week</h3>
                 <p class="chart-caption" id="acute-ed-chart-caption">
-                    Weekly count of emergency department visits for acute respiratory illness.
                     Point to a week on the chart for the date and value, or open the data table below the chart.
                 </p>
                 <div class="chart-canvas-wrap" role="img" aria-labelledby="acute-ed-chart-title" aria-describedby="acute-ed-chart-caption acuteEdChartSummary acuteEdBrushLabel">
@@ -231,10 +280,10 @@
                 </div>
                 <p id="acuteEdChartSummary" class="visually-hidden"></p>
                 <details class="data-table-disclosure d-none" id="acuteEdTableWrap" data-table-for="acuteEd">
-                    <summary aria-label="Show or hide data table: Acute respiratory emergency department visits"><span class="dt-show">Show data table</span><span class="dt-hide">Hide data table</span></summary>
+                    <summary aria-label="Show or hide data table: Number of Emergency Department Visits for Acute Respiratory Illness by Week"><span class="dt-show">Show data table</span><span class="dt-hide">Hide data table</span></summary>
                     <div class="data-table-scroll" tabindex="0" role="region" aria-labelledby="acuteEdTableCaption">
                         <table class="data-table">
-                            <caption id="acuteEdTableCaption">Acute respiratory emergency department visits</caption>
+                            <caption id="acuteEdTableCaption">Number of Emergency Department Visits for Acute Respiratory Illness by Week</caption>
                             <thead>
                                 <tr>
                                     <th scope="col">Week ending</th>
@@ -250,7 +299,7 @@
 
         <section class="charts-section reveal mt-5" aria-labelledby="hosp-heading">
             <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-3">
-                <h2 id="hosp-heading" class="section-title mb-0">Hospitalizations</h2>
+                <h2 id="hosp-heading" class="section-title mb-0">Weekly Hospitalizations</h2>
                 <div class="season-toggle" role="group" aria-label="Select hospitalization time range">
                     <button type="button" class="season-btn active" data-hosp-range="season" aria-pressed="true">
                         Current season
@@ -262,48 +311,62 @@
             </div>
             <h3 id="hospRangeCaption" class="range-heading mb-3">Showing current respiratory season (2026–27): October 3, 2026 – May 7, 2027.</h3>
 
+            <p class="chart-caption" id="hosp-chart-caption">
+                Number of hospitalizations for COVID-19, influenza, and RSV.
+            </p>
+
             <div class="panel chart-panel mb-4">
-                <h3 class="chart-title" id="hosp-chart-title">Hospitalizations</h3>
-                <p class="chart-caption" id="hosp-chart-caption">
-                    Weekly hospital counts for COVID-19, flu, and RSV.
-                    Point to a week on the chart for the date and counts, or open the data table below the chart.
-                </p>
-                <div class="chart-canvas-wrap" role="img" aria-labelledby="hosp-chart-title" aria-describedby="hosp-chart-caption hospChartSummary hospBrushLabel">
-                    <canvas id="hospChart" aria-hidden="true" tabindex="-1"></canvas>
-                    <p id="hospEmpty" class="chart-empty d-none">Hospitalization data coming soon.</p>
+                <h3 class="chart-title" id="hosp-covid-title">COVID-19</h3>
+                <div class="chart-canvas-wrap" role="img" aria-labelledby="hosp-covid-title" aria-describedby="hosp-chart-caption hospChartSummary">
+                    <canvas id="hospChart-covid" aria-hidden="true" tabindex="-1"></canvas>
+                    <p id="hospEmpty-covid" class="chart-empty d-none">Hospitalization data coming soon.</p>
                 </div>
-                <div class="chart-brush d-none" id="hospBrush" data-brush="hosp">
-                    <p class="chart-brush-caption">
-                        <span class="visually-hidden">Selected weeks: </span>
-                        <span id="hospBrushLabel" data-brush-label>—</span>
-                    </p>
-                    <div class="chart-brush-control" role="group" aria-label="Filter hospitalizations chart by week">
-                        <div class="chart-brush-rail">
-                            <div class="chart-brush-selection" data-brush-selection></div>
-                            <div class="chart-brush-handle" data-brush-handle="start" role="slider" tabindex="0" aria-label="Start week" aria-orientation="horizontal" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0"></div>
-                            <div class="chart-brush-handle" data-brush-handle="end" role="slider" tabindex="0" aria-label="End week" aria-orientation="horizontal" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0"></div>
-                        </div>
-                    </div>
-                </div>
-                <p id="hospChartSummary" class="visually-hidden"></p>
-                <details class="data-table-disclosure d-none" id="hospTableWrap" data-table-for="hosp">
-                    <summary aria-label="Show or hide data table: Hospitalizations"><span class="dt-show">Show data table</span><span class="dt-hide">Hide data table</span></summary>
-                    <div class="data-table-scroll" tabindex="0" role="region" aria-labelledby="hospTableCaption">
-                        <table class="data-table">
-                            <caption id="hospTableCaption">Hospitalizations</caption>
-                            <thead id="hospTableHead">
-                                <tr>
-                                    <th scope="col">Date updated</th>
-                                    <th scope="col">COVID-19</th>
-                                    <th scope="col">Flu</th>
-                                    <th scope="col">RSV</th>
-                                </tr>
-                            </thead>
-                            <tbody id="hospTableBody"></tbody>
-                        </table>
-                    </div>
-                </details>
             </div>
+            <div class="panel chart-panel mb-4">
+                <h3 class="chart-title" id="hosp-flu-title">Influenza</h3>
+                <div class="chart-canvas-wrap" role="img" aria-labelledby="hosp-flu-title" aria-describedby="hosp-chart-caption hospChartSummary">
+                    <canvas id="hospChart-flu" aria-hidden="true" tabindex="-1"></canvas>
+                    <p id="hospEmpty-flu" class="chart-empty d-none">Hospitalization data coming soon.</p>
+                </div>
+            </div>
+            <div class="panel chart-panel mb-4">
+                <h3 class="chart-title" id="hosp-rsv-title">RSV</h3>
+                <div class="chart-canvas-wrap" role="img" aria-labelledby="hosp-rsv-title" aria-describedby="hosp-chart-caption hospChartSummary">
+                    <canvas id="hospChart-rsv" aria-hidden="true" tabindex="-1"></canvas>
+                    <p id="hospEmpty-rsv" class="chart-empty d-none">Hospitalization data coming soon.</p>
+                </div>
+            </div>
+            <div class="chart-brush d-none mb-4" id="hospBrush" data-brush="hosp">
+                <p class="chart-brush-caption">
+                    <span class="visually-hidden">Selected weeks: </span>
+                    <span id="hospBrushLabel" data-brush-label>—</span>
+                </p>
+                <div class="chart-brush-control" role="group" aria-label="Filter hospitalizations charts by week">
+                    <div class="chart-brush-rail">
+                        <div class="chart-brush-selection" data-brush-selection></div>
+                        <div class="chart-brush-handle" data-brush-handle="start" role="slider" tabindex="0" aria-label="Start week" aria-orientation="horizontal" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0"></div>
+                        <div class="chart-brush-handle" data-brush-handle="end" role="slider" tabindex="0" aria-label="End week" aria-orientation="horizontal" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0"></div>
+                    </div>
+                </div>
+            </div>
+            <p id="hospChartSummary" class="visually-hidden"></p>
+            <details class="data-table-disclosure d-none" id="hospTableWrap" data-table-for="hosp">
+                <summary aria-label="Show or hide data table: Weekly Hospitalizations"><span class="dt-show">Show data table</span><span class="dt-hide">Hide data table</span></summary>
+                <div class="data-table-scroll" tabindex="0" role="region" aria-labelledby="hospTableCaption">
+                    <table class="data-table">
+                        <caption id="hospTableCaption">Weekly Hospitalizations</caption>
+                        <thead id="hospTableHead">
+                            <tr>
+                                <th scope="col">Date updated</th>
+                                <th scope="col">COVID-19</th>
+                                <th scope="col">Influenza</th>
+                                <th scope="col">RSV</th>
+                            </tr>
+                        </thead>
+                        <tbody id="hospTableBody"></tbody>
+                    </table>
+                </div>
+            </details>
         </section>
 
         <section class="school-section reveal mt-5" id="schoolChartSection" data-school-chart hidden aria-labelledby="school-heading">
@@ -377,7 +440,7 @@
                     </div>
                 </div>
             </div>
-            <p id="vaxCaption" class="section-caption mb-3">
+            <p id="vaxCaption" class="range-heading mb-3">
                 Orange County vaccination coverage. Select Overall Coverage, Age, or Gender.
             </p>
 
@@ -439,11 +502,14 @@
             </div>
 
             <p id="vaxFootnote" class="chart-note vax-footnote">
-                Coverage figures are Orange County vaccination rates from the NYS COVID-19 and Influenza Vaccination Data dashboards.
+                Source: NYS COVID-19 and Influenza Vaccination Data dashboards.
+            </p>
+            <p class="chart-note vax-footnote">
+                Vaccination data is based on data reported in the New York State Immunization Information System (NYSIIS). This includes limited data on vaccines administered through Federal entities (Veterans Health Administration) or performed outside of New York State to New York residents and will not be reflective of every dose administered to New York State residents in those settings.
             </p>
         </section>
 
-        <section class="context-section reveal mt-5" aria-labelledby="context-heading">
+        <section class="context-section reveal mt-5 mb-4" aria-labelledby="context-heading">
             <h2 id="context-heading" class="section-title">About this dashboard</h2>
             <div class="accordion" id="contextAccordion">
                 <div class="accordion-item">
@@ -458,7 +524,7 @@
                         <div class="accordion-body">
                             <p>
                                 The activity dial is a countywide summary of respiratory illness intensity.
-                                Charts below show how COVID-19, flu, and RSV contribute over time, acute respiratory ED visit volume, and hospitalization counts<span data-school-chart hidden>, and how school absenteeism is changing</span>.
+                                Charts show how COVID-19, flu, and RSV contribute over time, acute respiratory ED visit volume, and hospitalization counts<span data-school-chart hidden>, and how school absenteeism is changing</span>.
                             </p>
                             <p>
                                 Levels can rise or fall week to week. Use the dial for a quick read of current conditions,
@@ -518,54 +584,6 @@
             </div>
         </section>
 
-        <section class="actions-section reveal mt-5 mb-4" aria-labelledby="actions-heading">
-            <h2 id="actions-heading" class="section-title">Actions you can take</h2>
-            <div class="accordion" id="actionsAccordion">
-                <div class="accordion-item">
-                    <h3 class="accordion-header" id="headingActionsAny">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapseActionsAny" aria-expanded="false" aria-controls="collapseActionsAny">
-                            Healthy actions at any activity level
-                        </button>
-                    </h3>
-                    <div id="collapseActionsAny" class="accordion-collapse collapse" aria-labelledby="headingActionsAny"
-                        data-bs-parent="#actionsAccordion">
-                        <div class="accordion-body">
-                            <ul>
-                                <li>Get vaccinated against respiratory illnesses. COVID-19 and flu vaccines are recommended
-                                    for people 6 months and older. RSV vaccine is recommended for people at high risk—talk
-                                    with your health care provider for details. Go to
-                                    <a href="https://vaccinefinder.org/" target="_blank" rel="noopener noreferrer">vaccinefinder.org<span class="visually-hidden"> (opens in a new tab)</span></a>
-                                    for a location near you.
-                                </li>
-                                <li>Wash hands often with soap and water for 20 seconds, especially after coughing or sneezing.</li>
-                                <li>Cover coughs and sneezes with a tissue or your elbow.</li>
-                                <li>Stay home if you are sick with respiratory illness. Return to normal activity when
-                                    symptoms have improved and you are fever-free for 24 hours.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <h3 class="accordion-header" id="headingActionsHigh">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapseActionsHigh" aria-expanded="false" aria-controls="collapseActionsHigh">
-                            When levels are high
-                        </button>
-                    </h3>
-                    <div id="collapseActionsHigh" class="accordion-collapse collapse" aria-labelledby="headingActionsHigh"
-                        data-bs-parent="#actionsAccordion">
-                        <div class="accordion-body">
-                            <ul>
-                                <li>Consider wearing a well-fitted mask when around others indoors.</li>
-                                <li>Avoid crowded areas when possible.</li>
-                                <li>Improve air quality by bringing in fresh air from outside, purifying air indoors, or gathering outdoors.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
     </main>
 
     <div id="liveAnnouncer" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"></div>
