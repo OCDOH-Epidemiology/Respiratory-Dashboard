@@ -10,10 +10,10 @@
 //   trend:  1 = Decreasing,  2 = Staying the Same,  3 = Increasing
 // These override values from data/weekly.json.
 // =============================================================================
-const LAST_UPDATED = "October 30, 2026";
+const LAST_UPDATED = "November 6, 2026";
 
 const ACTIVITY = {
-  level: 1,
+  level: 2,
   trend: 3,
 };
 
