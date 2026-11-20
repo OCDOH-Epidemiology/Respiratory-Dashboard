@@ -1,7 +1,7 @@
 {
   "meta": {
-    "lastUpdated": "2026-11-07",
-    "lastUpdatedDisplay": "November 7, 2026",
+    "lastUpdated": "2026-11-14",
+    "lastUpdatedDisplay": "November 14, 2026",
     "seasonStart": "2026-10-03",
     "seasonEnd": "2027-05-07",
     "seasonLabel": "2026\u201327",
@@ -2214,91 +2214,102 @@
     },
     {
       "weekEnding": "2026-10-31",
-      "edCovid": 0.4,
-      "edFlu": 1.06,
+      "edCovid": 0.45,
+      "edFlu": 1.05,
       "edRsv": 0.2,
       "schoolAbsenteeism": null,
       "hospitalizations": null,
       "vaxCovid": null,
       "vaxFlu": null,
-      "edAcuteRespiratory": 486
+      "edAcuteRespiratory": 487
     },
     {
       "weekEnding": "2026-11-07",
-      "edCovid": 0.07,
-      "edFlu": 1.26,
+      "edCovid": 0.57,
+      "edFlu": 1.24,
       "edRsv": 0.29,
       "schoolAbsenteeism": null,
       "hospitalizations": null,
       "vaxCovid": null,
       "vaxFlu": null,
-      "edAcuteRespiratory": 545
+      "edAcuteRespiratory": 554
+    },
+    {
+      "weekEnding": "2026-11-14",
+      "edCovid": 0.0,
+      "edFlu": 2.11,
+      "edRsv": 0.2,
+      "schoolAbsenteeism": null,
+      "hospitalizations": null,
+      "vaxCovid": null,
+      "vaxFlu": null,
+      "edAcuteRespiratory": 589
     }
   ],
   "vaccinations": {
-    "asOf": "2026-11-11",
-    "asOfDisplay": "November 11, 2026",
+    "asOf": "2026-11-18",
+    "asOfDisplay": "November 18, 2026",
     "sourceUrl": "https://coronavirus.health.ny.gov/covid-19-and-influenza-vaccination-data",
     "demographicsUrl": "https://coronavirus.health.ny.gov/covid-19-and-influenza-vaccination-demographics",
     "nys": {
       "covid": {
-        "overallPercent": 5.5,
-        "doses": 627358,
+        "overallPercent": 5.9,
+        "doses": 670611,
         "byAge": {
-          "Ages 0\u201318": 1.1,
-          "Ages 19+": 6.7
+          "Ages 0\u201318": 1.2,
+          "Ages 19+": 7.1
         },
         "byGender": null
       },
       "flu": {
-        "overallPercent": 20.5,
-        "doses": 2343941,
+        "overallPercent": 22.1,
+        "doses": 2527525,
         "byAge": {
-          "Ages 0\u201318": 17.9,
-          "Ages 19+": 21.2
+          "Ages 0\u201318": 20.0,
+          "Ages 19+": 22.7
         },
         "byGender": null
       }
     },
     "orangeCounty": {
       "covid": {
-        "overallPercent": 3.0,
-        "doses": 12610,
+        "overallPercent": 3.2,
+        "doses": 13550,
         "byAge": {
-          "0-4": 0.2,
-          "5\u201311": 0.2,
-          "12\u201318": 0.5,
-          "19\u201325": 0.9,
-          "26\u201334": 1.3,
-          "35\u201344": 1.6,
-          "45\u201354": 1.8,
-          "55\u201364": 3.9,
-          "65\u201374": 9.8,
-          "75+": 13.6
+          "0-4": 0.3,
+          "5\u201311": 0.3,
+          "12\u201318": 0.6,
+          "19\u201325": 1.0,
+          "26\u201334": 1.4,
+          "35\u201344": 1.8,
+          "45\u201354": 2.0,
+          "55\u201364": 4.2,
+          "65\u201374": 10.3,
+          "75+": 14.4
         },
         "byGender": {
-          "Female": 3.3,
-          "Male": 2.8
+          "Female": 3.5,
+          "Male": 3.0
         }
       },
       "flu": {
-        "overallPercent": 12.9,
-        "doses": 53863,
+        "overallPercent": 14.1,
+        "doses": 58857,
         "byAge": {
-          "0-4": 11.0,
-          "5\u201311": 10.4,
-          "12\u201318": 9.8,
-          "19\u201325": 6.7,
-          "26\u201334": 6.8,
-          "35\u201344": 7.5,
-          "45\u201354": 10.1,
-          "55\u201364": 18.1,
-          "65\u201374": 24.6,
-          "75+": 32.1
+          "0-4": 12.6,
+          "5\u201311": 11.9,
+          "12\u201318": 11.1,
+          "19\u201325": 7.4,
+          "26\u201334": 7.6,
+          "35\u201344": 8.3,
+          "45\u201354": 11.0,
+          "55\u201364": 19.6,
+          "65\u201374": 26.2,
+          "75+": 34.0
         },
         "byGender": {
-          "Female": 14.5,
-          "Male": 11.3
+          "Female": 15.8,
+          "Male": 13.2
         }
       }
     }
