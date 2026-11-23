@@ -20,6 +20,17 @@ const ACTIVITY = {
 // Set to false to hide the School absenteeism section.
 const SHOW_SCHOOL_CHART = false;
 
+function trackEvent(event, properties) {
+  try {
+    if (window.posthog && typeof window.posthog.capture === "function") {
+      window.posthog.capture(event, properties);
+    }
+  } catch (err) {
+    /* ignore analytics errors */
+  }
+}
+
+
 const LEVEL_LABELS = {
   1: "Low",
   2: "Moderate",
@@ -2104,6 +2115,7 @@ function bindHospToggle() {
       const next = btn.getAttribute("data-hosp-range");
       if (!next || next === hospRangeMode) return;
       hospRangeMode = next;
+      trackEvent("filter_changed", { filter: "hosp_range", value: next });
       buttons.forEach((b) => {
         const active = b === btn;
         b.classList.toggle("active", active);
@@ -2128,6 +2140,7 @@ function bindSeasonToggle() {
       const next = btn.getAttribute("data-range");
       if (!next || next === rangeMode) return;
       rangeMode = next;
+      trackEvent("filter_changed", { filter: "time_range", value: next });
       buttons.forEach((b) => {
         const active = b === btn;
         b.classList.toggle("active", active);
@@ -2316,6 +2329,7 @@ function bindVaxToggles() {
       const next = btn.getAttribute("data-vax-place");
       if (!next || next === vaxPlace) return;
       vaxPlace = next;
+      trackEvent("filter_changed", { filter: "vax_place", value: next });
       placeBtns.forEach((b) => {
         const active = b === btn;
         b.classList.toggle("active", active);
@@ -2331,6 +2345,7 @@ function bindVaxToggles() {
       const next = btn.getAttribute("data-vax-pathogen");
       if (!next || next === vaxPathogen) return;
       vaxPathogen = next;
+      trackEvent("filter_changed", { filter: "vax_pathogen", value: next });
       pathogenBtns.forEach((b) => {
         const active = b === btn;
         b.classList.toggle("active", active);
@@ -2346,6 +2361,7 @@ function bindVaxToggles() {
       const next = btn.getAttribute("data-vax-dimension");
       if (!next || next === vaxDimension) return;
       vaxDimension = next;
+      trackEvent("filter_changed", { filter: "vax_dimension", value: next });
       dimensionBtns.forEach((b) => {
         const active = b === btn;
         b.classList.toggle("active", active);
@@ -2431,6 +2447,13 @@ function applySchoolChartVisibility() {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
+  const techNotes = document.getElementById("collapseTech");
+  if (techNotes) {
+    techNotes.addEventListener("shown.bs.collapse", () => {
+      trackEvent("technical_notes_expanded");
+    });
+  }
+
   applySchoolChartVisibility();
   applyChartDefaults();
   initGauge();
